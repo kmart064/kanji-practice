@@ -1,23 +1,54 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore node_modules directories for both client and server
+node_modules/
+client/node_modules/
+server/node_modules/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Ignore build directories for client (React) and server (TypeScript/Node.js)
+client/build/
+server/dist/
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore .env files that may contain sensitive data
+*.env
+client/.env
+server/.env
+
+# Ignore package-lock.json or yarn.lock if you want to avoid lock files being pushed
+# (Note: Lock files are often kept for consistency, so this is optional)
+package-lock.json
+yarn.lock
+
+# Ignore cache directories
+client/.next/
+server/.cache/
+
+# Ignore TypeScript build artifacts
+client/tsconfig.tsbuildinfo
+server/tsconfig.tsbuildinfo
+
+# Ignore Mac OS system files
+.DS_Store
+
+# Ignore temporary editor files
+*.swp
+*.swo
+*.swn
+*.tmp
+*.bak
+.idea/
+.vscode/
+
+# Ignore build output or artifact directories (optional)
+out/
+build/
+coverage/
+
+# Ignore SQLite database files (if applicable)
+db/*.db
+db/*.sqlite
+db/*.sqlite3
