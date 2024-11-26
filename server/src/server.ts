@@ -5,6 +5,10 @@ import { body, validationResult } from 'express-validator';
 import path from 'path';
 //import { Database } from 'sqlite3';
 
+interface KanjiRow {
+  kanji: string;
+}
+
 // Create an instance of Express
 const app = express();
 const port = 5000;
@@ -69,14 +73,18 @@ app.post('/', (req, res) => {
   res.send('POST request to the homepage')
 })
 
+const isStringArray = (value: unknown): boolean => {
+  return Array.isArray(value) && value.every((k) => typeof k === 'string');
+};
+
 // Route to add a kanji word to the SQLite database
 app.post('/api/add',
 [
   body('kanji')
-    .isString()
-    .withMessage('Input must be a string')
-    .notEmpty()
-    .withMessage('Kanji is required'),
+      .isArray()
+      .withMessage('Kanji must be an array')
+      .custom(isStringArray)
+      .withMessage('Each Kanji must be a string'),
 ], (req: Request, res: Response) => {
   const errors = validationResult(req);
   
@@ -84,15 +92,45 @@ app.post('/api/add',
     res.status(400).json({ errors: errors.array() });
     return;
   }
-  const { kanji } = req.body;
+  const { kanji } = req.body as { kanji: string[] };;
 
-  const sql = 'INSERT OR IGNORE INTO words (kanji) VALUES (?)';
-  db.run(sql, [kanji], function (err) {
+  // Check for existing Kanji
+  const placeholders = kanji.map(() => '?').join(', ');
+  const selectSql = `SELECT kanji FROM words WHERE kanji IN (${placeholders})`;
+
+  db.all(selectSql, kanji, (err, rows: KanjiRow[]) => {
     if (err) {
-      res.status(400).json({ error: err.message });
+      res.status(500).json({ error: 'Database query failed' });
       return;
     }
-    res.json({ id: this.lastID, kanji });
+
+    const existingKanji = rows.map((row) => row.kanji); // Kanji already in the database
+    const newKanji = kanji.filter((k) => !existingKanji.includes(k)); // Kanji to be added
+
+    if (newKanji.length > 0) {
+      // Insert new Kanji into the database
+      const insertSql = `INSERT INTO words (kanji) VALUES ${newKanji.map(() => '(?)').join(', ')}`;
+      db.run(insertSql, newKanji, function (insertErr) {
+        if (insertErr) {
+          res.status(500).json({ error: 'Failed to add Kanji to the database' });
+          return;
+        }
+      });
+    }
+
+    if (existingKanji.length === 0) {
+      res.status(200).json({
+        message: 'Kanji added successfully',
+        addedKanji: newKanji,
+      });
+    }
+    else {
+      res.status(201).json({
+        message: 'Some or all kanji have already been added',
+        addedKanji: newKanji,
+        duplicateKanji: existingKanji,
+      });
+    }
   });
 });
 
