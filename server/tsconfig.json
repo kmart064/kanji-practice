@@ -4,6 +4,7 @@
     "module": "commonjs",                   // Use CommonJS for Node.js environment
     "rootDir": "./src",                     // Root directory of the TypeScript source code
     "outDir": "./dist",                     // Output directory for compiled JavaScript files
+    "sourceMap": true,                      // Allow for debugging typescript
     "strict": true,                         // Enable all strict type-checking options
     "esModuleInterop": true,                // Enable compatibility with CommonJS modules
     "forceConsistentCasingInFileNames": true,
