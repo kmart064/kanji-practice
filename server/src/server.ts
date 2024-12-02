@@ -39,7 +39,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       kanji TEXT NOT NULL UNIQUE,
       interval INTEGER DEFAULT 1,
-      review_date DATE
+      review_date DATE DEFAULT CURRENT_DATE
     )`,
     (err) => {
       if (err) {
@@ -76,6 +76,23 @@ app.post('/', (req, res) => {
 const isStringArray = (value: unknown): boolean => {
   return Array.isArray(value) && value.every((k) => typeof k === 'string');
 };
+
+// Route to get data from the SQLite database
+app.get('/api/study', (req: Request, res: Response) => {
+  // First create the list of kanji that needs to be reviewed
+  const sql = 'SELECT * FROM words WHERE review_date <= CURRENT_DATE';
+  
+  db.all(sql, [], (err, rows: KanjiRow[]) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    let kanjiToReview = "";
+    rows.forEach(row => kanjiToReview += row.kanji + ", ");
+    res.send('Kanji to review: ' + kanjiToReview);
+  });
+});
 
 // Route to add a kanji word to the SQLite database
 app.post('/api/add',
