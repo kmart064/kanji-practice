@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                     // Specifies ECMAScript target version
-    "module": "commonjs",                   // Use CommonJS for Node.js environment
+    "target": "ES2022",                     // Specifies ECMAScript target version
+    "module": "ES2022",                   // 
     "rootDir": "./src",                     // Root directory of the TypeScript source code
     "outDir": "./dist",                     // Output directory for compiled JavaScript files
     "sourceMap": true,                      // Allow for debugging typescript
