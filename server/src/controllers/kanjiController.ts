@@ -1,7 +1,7 @@
 import { getDB } from '../utils/database.js';
 import { Request, Response, NextFunction } from "express";
 import { addKanjiToDB } from '../services/addKanjiToDB.js';
-import { getReviewKanji } from '../services/getReviewKanji.js';
+import { getDueKanji } from '../services/getDueKanji.js';
 import { validationResult } from 'express-validator';
 
 export const addKanji = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,12 +21,12 @@ export const addKanji = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const getKanjiList = async (req: Request, res: Response) => {
+export const getKanjiList = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = getDB();
-    const kanjiList = await getReviewKanji(db);
-    res.json(kanjiList);
+    const kanjiList = await getDueKanji(db);
+    res.status(201).json(kanjiList);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' }); // to be changed later
+    next(error);
   }
 };

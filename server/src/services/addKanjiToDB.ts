@@ -1,5 +1,5 @@
 import { Database } from 'sqlite';
-import { getExistingKanji } from "./getExistingKanji.js";
+import { checkDuplicateKanji } from "./checkDuplicateKanji.js";
 import { insertNewKanji } from "./insertNewKanji.js";
 
 /**
@@ -12,7 +12,7 @@ import { insertNewKanji } from "./insertNewKanji.js";
  */
 export async function addKanjiToDB(db: Database, kanji: string[]): Promise<any> {
   try {
-    const existingKanji = await getExistingKanji(db, kanji);
+    const existingKanji = await checkDuplicateKanji(db, kanji);
     const newKanji = kanji.filter(k => !existingKanji.includes(k));
     const insertedKanji = await insertNewKanji(db, newKanji);
 
