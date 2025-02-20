@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
+import logger from "../utils/logger.js";
 
 export function errorHandler(err: unknown, req: Request, res: Response, next: NextFunction) {
-  console.error(err); // Log error for debugging
+  logger.error(err instanceof Error ? err.message : "Unknown error occurred");
   const errorMessage = err instanceof Error ? err.message : "Internal server error";
 
   res.status(500).json({
