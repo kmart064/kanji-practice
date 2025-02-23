@@ -1,6 +1,5 @@
 import express from 'express';
-import { validateKanji } from '../middlewares/validateKanji.js';
-import { addKanji, getKanjiList } from '../controllers/kanjiController.js';
+import { startSession, getSessionInfo, updateSessionFromReview, completeSessionFromReview } from '../controllers/reviewController.js'
 
 const router = express.Router();
 
@@ -11,7 +10,9 @@ const asyncHandler = (fn: express.RequestHandler) =>
 };
 
 // Use asyncHandler to ensure errors are forwarded to Express middleware
-router.post('/add', validateKanji, asyncHandler(addKanji));
-router.get('/words', asyncHandler(getKanjiList));
+router.post('/start', asyncHandler(startSession));
+router.get('/:id', asyncHandler(getSessionInfo));
+router.post('/:id/review', asyncHandler(updateSessionFromReview));
+router.post('/:id/complete', asyncHandler(completeSessionFromReview));
 
 export default router;

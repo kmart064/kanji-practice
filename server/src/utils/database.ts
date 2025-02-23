@@ -13,16 +13,24 @@ export async function initializeDB(dbPath: string): Promise<Database> {
 
       console.log('Connected to SQLite database.');
 
-      // Create the table if it doesn't exist
       await dbInstance.exec(`
       CREATE TABLE IF NOT EXISTS words (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         kanji TEXT NOT NULL UNIQUE,
         interval INTEGER DEFAULT 1,
         review_date DATE DEFAULT CURRENT_DATE
-      )`);
+      );
 
-      console.log('Table words is ready.');
+      CREATE TABLE IF NOT EXISTS review_sessions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        created_at TEXT DEFAULT (datetime('now')),
+        status TEXT CHECK(status IN ('in_progress', 'completed')) NOT NULL DEFAULT 'in_progress',
+        correctly_reviewed TEXT DEFAULT '[]',
+        incorrectly_reviewed TEXT DEFAULT '[]'
+      );
+      `);
+
+      console.log('Database initialized!');
       
       return dbInstance;
     } catch (err) {

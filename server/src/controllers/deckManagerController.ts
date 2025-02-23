@@ -30,3 +30,7 @@ export const getKanjiList = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
+
+export const startReview = async (req: Request, res: Response, next: NextFunction) => {
+    
+}
