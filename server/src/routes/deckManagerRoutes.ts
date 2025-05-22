@@ -12,6 +12,6 @@ const asyncHandler = (fn: express.RequestHandler) =>
 
 // Use asyncHandler to ensure errors are forwarded to Express middleware
 router.post('/add', validateKanji, asyncHandler(addKanji));
-router.get('/words', asyncHandler(getKanjiList));
+router.get('/due-kanji', asyncHandler(getKanjiList));
 
 export default router;

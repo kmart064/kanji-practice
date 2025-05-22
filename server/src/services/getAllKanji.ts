@@ -1,8 +1,7 @@
-import { Database } from 'sqlite';
-import { KanjiRow } from '../models/KanjiRow';
+import { Database } from "sqlite";
+import { Word } from "../models/Word.js";
 
-export async function getAllKanji(db: Database): Promise<string[]> {  
+export async function getAllKanji(db: Database): Promise<Word[]> {
   const selectSql = "SELECT kanji FROM words";
-    const rows: KanjiRow[] = await db.all(selectSql);
-    return (rows.map(row => row.kanji));
+  return await db.all(selectSql);
 }

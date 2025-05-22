@@ -1,10 +1,14 @@
-import { getDB } from '../utils/database.js';
+import { getDB } from "../utils/database.js";
 import { Request, Response, NextFunction } from "express";
-import { addKanjiToDB } from '../services/addKanjiToDB.js';
-import { getDueKanji } from '../services/getDueKanji.js';
-import { validationResult } from 'express-validator';
+import { addKanjiToDB } from "../services/addKanjiToDB.js";
+import { getDueKanji } from "../services/getDueKanji.js";
+import { validationResult } from "express-validator";
 
-export const addKanji = async (req: Request, res: Response, next: NextFunction) => {
+export const addKanji = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const db = getDB();
     const errors = validationResult(req);
@@ -21,7 +25,11 @@ export const addKanji = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const getKanjiList = async (req: Request, res: Response, next: NextFunction) => {
+export const getKanjiList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const db = getDB();
     const kanjiList = await getDueKanji(db);
@@ -30,7 +38,3 @@ export const getKanjiList = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
-
-export const startReview = async (req: Request, res: Response, next: NextFunction) => {
-    
-}
