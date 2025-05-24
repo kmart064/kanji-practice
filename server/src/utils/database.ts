@@ -19,7 +19,7 @@ export async function initializeDB(dbPath: string): Promise<Database> {
       CREATE TABLE IF NOT EXISTS words (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         kanji TEXT NOT NULL UNIQUE,
-        interval INTEGER DEFAULT 1,
+        review_stage INTEGER DEFAULT 0,
         review_date DATE DEFAULT CURRENT_DATE
       );
 
@@ -29,12 +29,17 @@ export async function initializeDB(dbPath: string): Promise<Database> {
       );
     
       CREATE TABLE IF NOT EXISTS review_sessions (
-          session_id INTEGER,
-          status TEXT CHECK(status IN ('batch', 'deck', 'correct', 'incorrect')) NOT NULL DEFAULT 'deck',
-          word_id INTEGER,
-          PRIMARY KEY (session_id, word_id),
-          FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE,
-          FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
+        session_id INTEGER,
+        status TEXT CHECK(status IN ('batch', 'deck', 'correct', 'incorrect')) NOT NULL DEFAULT 'deck',
+        word_id INTEGER,
+        PRIMARY KEY (session_id, word_id),
+        FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE,
+        FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE IF NOT EXISTS srs_schedule (
+        stage INTEGER PRIMARY KEY,
+        interval_days INTEGER NOT NULL
       );
       `);
 

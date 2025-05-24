@@ -7,6 +7,9 @@ import { Word } from "../models/Word.js";
  * @returns all kanji that have a review date before or on the current day
  */
 export async function getDueKanji(db: Database): Promise<Word[]> {
-  const sql = "SELECT id, kanji FROM words WHERE review_date <= date('now')";
+  const sql = `SELECT id, kanji 
+                FROM words w
+                JOIN srs_schedule s ON w.review_stage = s.stage                 
+                WHERE DATE(w.review_date, '+' || s.interval_days || ' days') <= DATE('now')`;
   return await db.all(sql);
 }
