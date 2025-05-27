@@ -28,7 +28,7 @@ export async function addKanjiToDB(
           ? "All kanji added successfully"
           : "Some kanji were duplicates and only unique ones were added",
       inserted: insertedKanji,
-      duplicates: existingKanji,
+      duplicates: existingKanji.map((word) => word.kanji),
     };
   } catch (error: unknown) {
     if (error instanceof Error) {
