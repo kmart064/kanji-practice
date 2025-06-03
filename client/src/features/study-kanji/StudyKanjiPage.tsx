@@ -33,7 +33,10 @@ export default function StudyKanjiPage() {
     <div>
       <h1>Study Kanji</h1>
       {!sessionActive ? (
-        <button onClick={startSession}>Start Studying</button>
+        <>
+          <p>{message && <pre>{message}</pre>}</p>
+          <button onClick={startSession}>Start Studying</button>
+        </>
       ) : (
         <>
           <p>{message && <pre>{message}</pre>}</p>
