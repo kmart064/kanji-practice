@@ -64,19 +64,26 @@ export const updateSessionFromReview = async (
     const update = await updateReview(db, sessionId, incorrectKanji);
 
     let response = "";
+    let status = "";
+    let message = "";
 
     if (update.nextReviewCards.length === 0) {
+      message = "Session complete";
+      status = "Complete";
       response = "All scheduled cards reviewed! Congratulations!";
       // delete the session data since it has been completed
       await deleteSession(db, Number(req.params.id));
     } else {
       // return to the user the next cards to review
+      message = "Session updated";
+      status = "In Progress";
       response = getFullPrompt(update.nextReviewCards);
     }
 
     if (update.unaddedKanji.length === 0) {
       res.json({
-        message: "Session updated",
+        status,
+        message,
         response,
       });
     } else {
@@ -86,7 +93,8 @@ export const updateSessionFromReview = async (
       }
       newKanji = newKanji.substring(0, newKanji.length - 2);
       res.json({
-        message: "Session updated",
+        status,
+        message,
         note:
           "The following kanji have not yet been added to the db: " + newKanji,
         response,
