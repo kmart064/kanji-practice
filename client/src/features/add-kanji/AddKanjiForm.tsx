@@ -10,8 +10,14 @@ export default function AddKanjiForm() {
     try {
       const kanjiArray = inputText
         .split(",")
-        .map((k) => k.trim()) // remove whitespace around each kanji
-        .filter((k) => k !== ""); // remove any empty entries
+        .map(
+          (k) =>
+            k
+              .trim()
+              .replace(/^["']|["']$/g, "") // remove surrounding quotes
+              .replace(/[^\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]+/gu, "") // remove non-Japanese chars
+        )
+        .filter((k) => k !== "");
       const response = await addKanji(kanjiArray);
       let msg = `${response.message}`;
 
