@@ -15,16 +15,20 @@ export async function addKanjiToDB(
   kanji: string[]
 ): Promise<any> {
   try {
-    const existingKanji = await checkDuplicateKanji(db, kanji);
-    const newKanji = kanji.filter(
+    // remove any duplicates within the list
+    const uniqueList: string[] = Array.from(new Set(kanji));
+    // remove any kanji already added to the db
+    const existingKanji = await checkDuplicateKanji(db, uniqueList);
+    const newKanji = uniqueList.filter(
       (k) => !existingKanji.map((word) => word.kanji).includes(k)
     );
     const insertedKanji = await insertNewKanji(db, newKanji);
 
     return {
-      status: insertedKanji.length === kanji.length ? "success" : "partial",
+      status:
+        insertedKanji.length === uniqueList.length ? "success" : "partial",
       message:
-        insertedKanji.length === kanji.length
+        insertedKanji.length === uniqueList.length
           ? "All kanji added successfully"
           : "Some kanji were duplicates and only unique ones were added",
       inserted: insertedKanji,
