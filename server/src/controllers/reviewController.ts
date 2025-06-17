@@ -12,6 +12,7 @@ import {
   existingSession,
   getCurrentBatch,
 } from "../services/existingSession.js";
+import { getGroqPassage } from "../services/groqRequest.js";
 
 export const startReview = async (
   req: Request,
@@ -25,7 +26,8 @@ export const startReview = async (
     if (sessionId) {
       // if it exists, get the current review cards
       const reviewBatch = await getCurrentBatch(db);
-      const response = getFullPrompt(reviewBatch);
+      const prompt = getFullPrompt(reviewBatch);
+      const response = await generateResponse(prompt);
       res.status(201).json({ sessionId, message: response });
     } else {
       sessionId = await startNewSession(db);
@@ -77,7 +79,8 @@ export const updateSessionFromReview = async (
       // return to the user the next cards to review
       message = "Session updated";
       status = "In Progress";
-      response = getFullPrompt(update.nextReviewCards);
+      const prompt = getFullPrompt(update.nextReviewCards);
+      response = await generateResponse(prompt);
     }
 
     if (update.unaddedKanji.length === 0) {
@@ -104,3 +107,12 @@ export const updateSessionFromReview = async (
     next(error);
   }
 };
+
+async function generateResponse(prompt: string): Promise<string> {
+  let response = prompt;
+  if (process.env.USE_API) {
+    // send prompt request to the API and get a response passage
+    response = await getGroqPassage(prompt);
+  }
+  return response;
+}

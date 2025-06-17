@@ -1,12 +1,12 @@
 import { Database } from "sqlite";
 import { getDueKanji } from "./getDueKanji.js";
 import { shuffleArray } from "../utils/shuffle.js";
-import { startNewSession, updateSession } from "./reviewSessions.js";
+import { updateSession } from "./reviewSessions.js";
 import { getFullPrompt } from "./getReadingPassage.js";
 import { Word } from "../models/Word.js";
 import { ReviewEntry } from "../models/ReviewEntry.js";
 import { ReviewStatus } from "../models/ReviewStatus.js";
-import { existingSession } from "./existingSession.js";
+import { getGroqPassage } from "./groqRequest.js";
 
 export async function startReviewService(
   db: Database,
@@ -47,5 +47,12 @@ export async function startReviewService(
 
   await updateSession(db, sessionId, reviewEntries);
 
-  return getFullPrompt(reviewBatch);
+  const prompt = getFullPrompt(reviewBatch);
+  if (process.env.USE_API) {
+    // send prompt request to the API and get a response passage
+    return await getGroqPassage(prompt);
+  } else {
+    // send the user the request to be manually sent to a gen AI chatbot
+    return prompt;
+  }
 }
