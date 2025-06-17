@@ -8,16 +8,24 @@ import { ReviewEntry } from "../models/ReviewEntry.js";
 import { ReviewStatus } from "../models/ReviewStatus.js";
 import { getGroqPassage } from "./groqRequest.js";
 
+interface StudyResponse {
+  passage: string;
+  wordList: string[];
+}
+
 export async function startReviewService(
   db: Database,
   sessionId: number
-): Promise<string> {
+): Promise<StudyResponse> {
   // get the kanji due for review
   const reviewKanji = await getDueKanji(db);
 
   // if there's no cards to review, then simply let the user know and exit
   if (reviewKanji.length === 0) {
-    return "No cards available to review.";
+    return {
+      passage: "No cards available to review.",
+      wordList: [],
+    };
   }
 
   // shuffle the kanji
@@ -48,11 +56,19 @@ export async function startReviewService(
   await updateSession(db, sessionId, reviewEntries);
 
   const prompt = getFullPrompt(reviewBatch);
+  const wordList = reviewBatch.map((word) => word.kanji);
   if (process.env.USE_API) {
     // send prompt request to the API and get a response passage
-    return await getGroqPassage(prompt);
+    const passage = await getGroqPassage(prompt);
+    return {
+      passage,
+      wordList,
+    };
   } else {
     // send the user the request to be manually sent to a gen AI chatbot
-    return prompt;
+    return {
+      passage: prompt,
+      wordList,
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { startStudying, updateStudySession } from "./studyKanjiAPI";
 
 export default function StudyKanjiPage() {
@@ -6,10 +6,17 @@ export default function StudyKanjiPage() {
   const [input, setInput] = useState<string>("");
   const [sessionActive, setSessionActive] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<number>();
+  const [wordList, setWordList] = useState<string>("");
+  const [showWordList, setShowWordList] = useState<boolean>(false);
+
+  useEffect(() => {
+    setShowWordList(false); // always hide on update
+  }, [message]);
 
   const startSession = async () => {
     const response = await startStudying();
     setMessage(response.message);
+    setWordList(response.wordList || "");
     setSessionActive(true);
     setSessionId(response.sessionId);
   };
@@ -22,6 +29,7 @@ export default function StudyKanjiPage() {
     if (!sessionId) throw Error("No sessionId assigned for study session.");
     const response = await updateStudySession(sessionId, kanjiArray);
     setMessage(`${response.message}\n${response.response}`);
+    setWordList(response.wordList || "");
     setInput("");
 
     if (response.status === "Complete") {
@@ -39,6 +47,23 @@ export default function StudyKanjiPage() {
         {message && (
           <div className="bg-gray-100 dark:bg-gray-700 text-sm p-4 rounded whitespace-pre-wrap">
             {message}
+          </div>
+        )}
+
+        {wordList && (
+          <div>
+            <button
+              onClick={() => setShowWordList((prev) => !prev)}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition mb-2 mx-auto block"
+            >
+              {showWordList ? "Hide Word List" : "Show Word List"}
+            </button>
+
+            {showWordList && (
+              <pre className="bg-gray-50 dark:bg-gray-700 dark:text-white p-4 rounded-lg whitespace-pre-wrap border border-gray-300 dark:border-gray-600 text-sm">
+                {wordList}
+              </pre>
+            )}
           </div>
         )}
 

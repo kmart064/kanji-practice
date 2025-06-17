@@ -28,11 +28,13 @@ export const startReview = async (
       const reviewBatch = await getCurrentBatch(db);
       const prompt = getFullPrompt(reviewBatch);
       const response = await generateResponse(prompt);
-      res.status(201).json({ sessionId, message: response });
+      const wordList = formatWordList(reviewBatch.map((word) => word.kanji));
+      res.status(201).json({ sessionId, message: response, wordList });
     } else {
       sessionId = await startNewSession(db);
       const response = await startReviewService(db, sessionId);
-      res.status(201).json({ sessionId, message: response });
+      const wordList = formatWordList(response.wordList);
+      res.status(201).json({ sessionId, message: response.passage, wordList });
     }
   } catch (error) {
     next(error);
@@ -68,6 +70,7 @@ export const updateSessionFromReview = async (
     let response = "";
     let status = "";
     let message = "";
+    let wordList = "";
 
     if (update.nextReviewCards.length === 0) {
       message = "Session complete";
@@ -81,12 +84,16 @@ export const updateSessionFromReview = async (
       status = "In Progress";
       const prompt = getFullPrompt(update.nextReviewCards);
       response = await generateResponse(prompt);
+      wordList = formatWordList(
+        update.nextReviewCards.map((word) => word.kanji)
+      );
     }
 
     if (update.unaddedKanji.length === 0) {
       res.json({
         status,
         message,
+        wordList,
         response,
       });
     } else {
@@ -98,6 +105,7 @@ export const updateSessionFromReview = async (
       res.json({
         status,
         message,
+        wordList,
         note:
           "The following kanji have not yet been added to the db: " + newKanji,
         response,
@@ -115,4 +123,12 @@ async function generateResponse(prompt: string): Promise<string> {
     response = await getGroqPassage(prompt);
   }
   return response;
+}
+
+function formatWordList(wordList: string[]): string {
+  let result = "";
+  for (let i = 0; i < wordList.length; ++i) {
+    result = result.concat(i + 1 + ". " + wordList[i] + "\n");
+  }
+  return result;
 }

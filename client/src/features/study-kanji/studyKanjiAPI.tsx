@@ -1,6 +1,7 @@
 export async function startStudying(): Promise<{
   sessionId: number;
   message: string;
+  wordList: string;
 }> {
   const res = await fetch("/review/start", {
     method: "POST",
@@ -21,6 +22,7 @@ export async function updateStudySession(
 ): Promise<{
   status: string;
   message: string;
+  wordList: string;
   note: string;
   response: string;
 }> {
