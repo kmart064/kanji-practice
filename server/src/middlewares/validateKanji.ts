@@ -5,8 +5,19 @@ const isStringArray = (value: unknown): boolean => {
   return Array.isArray(value) && value.every((k) => typeof k === "string");
 };
 
+const cleanKanjiString = (k: string): string => {
+  return k
+    .trim()
+    .replace(/^["']|["']$/g, "") // remove surrounding quotes
+    .replace(/[^\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]+/gu, ""); // remove non-Japanese chars
+};
+
 export const validateKanji = [
   body("kanji")
+    // Sanitize each kanji string in the array:
+    .customSanitizer((kanjiArray: string[]) => {
+      return kanjiArray.map(cleanKanjiString).filter((k) => k !== "");
+    })
     .isArray()
     .withMessage("Kanji must be an array")
     .custom(isStringArray)
@@ -17,12 +28,13 @@ type KanjiQuery = { kanji: string };
 
 export const validateSingleKanji: RequestHandler[] = [
   query("kanji")
+    .customSanitizer(cleanKanjiString)
     .isString()
     .withMessage("Kanji must be a string")
     .notEmpty()
     .withMessage("Kanji cannot be empty")
-    .matches(/^\S$/)
-    .withMessage("Kanji must be a single non-whitespace character"),
+    .matches(/^[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]+$/u)
+    .withMessage("Kanji must be a single word with only Japanese characters"),
 
   (req, res, next) => {
     const errors = validationResult(req);

@@ -4,6 +4,7 @@ import { addKanjiToDB } from "../services/addKanjiToDB.js";
 import { getDueKanji } from "../services/getDueKanji.js";
 import { validationResult } from "express-validator";
 import { findSamePrefixKanji } from "../services/findSamePrefixKanji.js";
+import { deleteKanjiService } from "../services/deleteKanjiService.js";
 
 export const addKanji = async (
   req: Request,
@@ -60,6 +61,27 @@ export const findSimilarKanji = async (
     }
     const result = await findSamePrefixKanji(db, kanji);
     res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteKanji = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const db = getDB();
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+      return;
+    }
+
+    const { kanji } = req.body as { kanji: string[] };
+    const result = await deleteKanjiService(db, kanji);
+    res.status(200).json({ message: "Kanji deleted successfully" });
   } catch (error) {
     next(error);
   }

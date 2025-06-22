@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import AddKanjiPage from "./features/add-kanji/AddKanjiPage";
+import AddKanjiPage from "./features/manage-deck/ManageDeckPage";
 import StudyKanjiPage from "./features/study-kanji/StudyKanjiPage";
 
 function App() {

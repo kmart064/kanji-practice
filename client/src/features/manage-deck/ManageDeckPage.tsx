@@ -1,4 +1,5 @@
-import AddKanjiForm from "./AddKanjiForm";
+import AddKanjiForm from "./addKanjiForm";
+import DeleteKanjiForm from "./deleteKanjiForm";
 import SearchKanjiForm from "./SearchKanjiForm";
 
 export default function AddKanjiPage() {
@@ -17,6 +18,13 @@ export default function AddKanjiPage() {
             Search for Kanji
           </h2>
           <SearchKanjiForm />
+        </div>
+
+        <div className="bg-white shadow-md rounded-2xl p-8">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            Delete Kanji
+          </h1>
+          <DeleteKanjiForm />
         </div>
       </div>
     </div>
