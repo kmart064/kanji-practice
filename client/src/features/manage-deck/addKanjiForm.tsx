@@ -52,12 +52,14 @@ export default function AddKanjiForm() {
         placeholder="例：日, 本, 語"
         className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-150 shadow"
-      >
-        Submit
-      </button>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className="px-8 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-150 shadow"
+        >
+          Add
+        </button>
+      </div>
       {message && (
         <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded-lg text-sm text-gray-700">
           {message}
