@@ -57,7 +57,7 @@ export async function startReviewService(
 
   const prompt = getFullPrompt(reviewBatch);
   const wordList = reviewBatch.map((word) => word.kanji);
-  if (process.env.USE_API) {
+  if (process.env.USE_API === "true") {
     // send prompt request to the API and get a response passage
     const passage = await getGroqPassage(prompt);
     return {

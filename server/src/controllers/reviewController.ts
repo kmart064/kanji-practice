@@ -118,7 +118,7 @@ export const updateSessionFromReview = async (
 
 async function generateResponse(prompt: string): Promise<string> {
   let response = prompt;
-  if (process.env.USE_API) {
+  if (process.env.USE_API === "true") {
     // send prompt request to the API and get a response passage
     response = await getGroqPassage(prompt);
   }
