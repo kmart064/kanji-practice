@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import * as dotenv from "dotenv";
 import { getDB, initializeDB } from "./utils/database.js";
 import { syncSrsScheduleFromEnv } from "./utils/srsSchedule.js";
@@ -8,6 +9,15 @@ const app = express();
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      callback(null, origin); // Allow all origins dynamically
+    },
+    credentials: true,
+  })
+);
 
 // Load environment-specific configuration
 const env = process.env.NODE_ENV || "development";
