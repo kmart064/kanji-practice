@@ -1,6 +1,8 @@
 const API_BASE_URL = process.env.REACT_APP_API_URL || "";
 const API_USER = process.env.REACT_APP_API_USER || "";
 const API_PASS = process.env.REACT_APP_API_PASS || "";
+const PORT = process.env.REACT_APP_SERVER_PORT || "3001";
+const LOCAL = process.env.REACT_APP_LOCAL_MODE === "true" ? true : false;
 
 const authHeader = "Basic " + btoa(`${API_USER}:${API_PASS}`);
 
@@ -10,7 +12,8 @@ const authHeader = "Basic " + btoa(`${API_USER}:${API_PASS}`);
  * @param options Optional fetch options
  */
 export async function apiFetch(path: string, options: RequestInit = {}) {
-  const url = `${API_BASE_URL}${path}`;
+  let url = `http://localhost:${PORT}${path}`;
+  if (!LOCAL) url = `${API_BASE_URL}${path}`;
 
   const baseHeaders = {
     Authorization: authHeader,
