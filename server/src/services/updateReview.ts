@@ -110,6 +110,7 @@ function getNextBatch(deck: ReviewEntry[]): ReviewEntry[] {
   // Searching will continue until either the limit for review cards
   // has been reached, or all possible cards left for review have been found.
   while (true) {
+    deck = shuffleArray(deck);
     for (let i = 0; i < deck.length && newBatch.length < cardsPerCycle; ++i) {
       if (deck[i].status === ReviewStatus.Deck) {
         deck[i].status = ReviewStatus.Batch;
@@ -131,7 +132,6 @@ function getNextBatch(deck: ReviewEntry[]): ReviewEntry[] {
           --incorrectCount;
         }
       });
-      deck = shuffleArray(deck);
     } else {
       // if there are no incorrect cards left then we have reached the last batch, so it doesn't
       // have to be of standard count
