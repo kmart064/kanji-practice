@@ -20,7 +20,7 @@ export async function updateStudySession(
   note: string;
   response: string;
 }> {
-  return await apiFetch(`review/${sessionId}/review-update`, {
+  return await apiFetch(`/review/${sessionId}/review-update`, {
     method: "POST",
     body: JSON.stringify({ incorrectKanji }),
   });
