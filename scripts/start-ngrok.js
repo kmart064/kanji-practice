@@ -5,7 +5,7 @@ const qrcode = require("qrcode-terminal");
 const crypto = require("crypto");
 
 const SERVER_PORT = 3001;
-const CLIENT_PORT = 3000;
+const CLIENT_PORT = 5173;
 const ENV_PATH = path.resolve(__dirname, "../client/.env");
 
 function genCreds() {
@@ -38,9 +38,9 @@ function genCreds() {
     );
 
     // Write backend env vars to React .env
-    const envContent = `REACT_APP_API_URL=${serverUrl}
-REACT_APP_API_USER=${serverCreds.username}
-REACT_APP_API_PASS=${serverCreds.password}
+    const envContent = `VITE_API_URL=${serverUrl}
+VITE_API_USER=${serverCreds.username}
+VITE_API_PASS=${serverCreds.password}
 `;
 
     fs.writeFileSync(ENV_PATH, envContent);

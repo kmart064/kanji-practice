@@ -1,8 +1,8 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || "";
-const API_USER = process.env.REACT_APP_API_USER || "";
-const API_PASS = process.env.REACT_APP_API_PASS || "";
-const PORT = process.env.REACT_APP_SERVER_PORT || "3001";
-const LOCAL = process.env.REACT_APP_LOCAL_MODE === "true" ? true : false;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+const API_USER = import.meta.env.VITE_API_USER || "";
+const API_PASS = import.meta.env.VITE_API_PASS || "";
+const PORT = import.meta.env.VITE_SERVER_PORT || "3001";
+const LOCAL = import.meta.env.VITE_LOCAL_MODE === "true" ? true : false;
 
 const authHeader = "Basic " + btoa(`${API_USER}:${API_PASS}`);
 
