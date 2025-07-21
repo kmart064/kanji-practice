@@ -1,18 +1,20 @@
-import { Database } from "sqlite";
+import pool from "../utils/db.js";
 
 /**
  * Inserts the provided kanji into the database
- * @param db 
- * @param newKanji 
+ * @param newKanji
  * @returns the kanji inserted
  */
-export async function insertNewKanji(db: Database, newKanji: string[]): Promise<string[]> {
-    if (newKanji.length === 0) {
-      return [];
-    }
+export async function insertNewKanji(newKanji: string[]): Promise<string[]> {
+  if (newKanji.length === 0) {
+    return [];
+  }
 
-    const insertSql = `INSERT INTO words (kanji) VALUES ${newKanji.map(() => '(?)').join(', ')}`;
-    await db.run(insertSql, newKanji);
+  const placeholders = newKanji.map((_, i) => `($${i + 1})`).join(", ");
 
-    return newKanji;
+  const insertSql = `INSERT INTO words (kanji) VALUES ${placeholders}`;
+
+  await pool.query(insertSql, newKanji);
+
+  return newKanji;
 }

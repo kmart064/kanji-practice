@@ -1,7 +1,9 @@
-import { Database } from "sqlite";
 import { Word } from "../models/Word.js";
+import pool from "../utils/db.js";
 
-export async function getAllKanji(db: Database): Promise<Word[]> {
+export async function getAllKanji(): Promise<Word[]> {
   const selectSql = "SELECT kanji FROM words";
-  return await db.all(selectSql);
+  const result = await pool.query(selectSql);
+  const rows: Word[] = result.rows;
+  return rows;
 }

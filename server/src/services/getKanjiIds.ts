@@ -1,20 +1,15 @@
-import { Database } from "sqlite";
 import { Word } from "../models/Word";
+import pool from "../utils/db.js";
 
-export async function getKanjiIds(
-  db: Database,
-  kanji: string[]
-): Promise<Word[]> {
-  // Return an empty array if no kanji words are provided
+export async function getKanjiIds(kanji: string[]): Promise<Word[]> {
   if (!kanji || kanji.length === 0) {
     return [];
   }
 
-  // Create placeholders for the SQL query (?, ?, ?)
-  const placeholders = kanji.map(() => "?").join(", ");
+  const placeholders = kanji.map((_, index) => `$${index + 1}`).join(", ");
 
-  return await db.all(
-    `SELECT id, kanji FROM words WHERE kanji IN (${placeholders})`,
-    kanji
-  );
+  const query = `SELECT id, kanji FROM words WHERE kanji IN (${placeholders})`;
+  const result = await pool.query(query, kanji);
+
+  return result.rows as Word[];
 }

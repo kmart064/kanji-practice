@@ -1,4 +1,3 @@
-import { getDB } from "../utils/database.js";
 import { Request, Response, NextFunction } from "express";
 import { addKanjiToDB } from "../services/addKanjiToDB.js";
 import { getDueKanji } from "../services/getDueKanji.js";
@@ -12,7 +11,6 @@ export const addKanji = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
@@ -20,7 +18,7 @@ export const addKanji = async (
     }
 
     const { kanji } = req.body as { kanji: string[] };
-    const result = await addKanjiToDB(db, kanji);
+    const result = await addKanjiToDB(kanji);
     res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -33,8 +31,7 @@ export const getKanjiList = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
-    const kanjiList = await getDueKanji(db);
+    const kanjiList = await getDueKanji();
     res.status(201).json(kanjiList);
   } catch (error) {
     next(error);
@@ -47,7 +44,6 @@ export const findSimilarKanji = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
@@ -59,7 +55,7 @@ export const findSimilarKanji = async (
       res.status(400).json({ error: "kanji must be a string" });
       return;
     }
-    const result = await findSamePrefixKanji(db, kanji);
+    const result = await findSamePrefixKanji(kanji);
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -72,7 +68,6 @@ export const deleteKanji = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
@@ -80,7 +75,7 @@ export const deleteKanji = async (
     }
 
     const { kanji } = req.body as { kanji: string[] };
-    const result = await deleteKanjiService(db, kanji);
+    const result = await deleteKanjiService(kanji);
     res.status(200).json({ message: "Kanji deleted successfully" });
   } catch (error) {
     next(error);

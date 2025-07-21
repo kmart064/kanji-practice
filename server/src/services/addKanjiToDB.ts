@@ -1,4 +1,3 @@
-import { Database } from "sqlite";
 import { checkDuplicateKanji } from "./checkDuplicateKanji.js";
 import { insertNewKanji } from "./insertNewKanji.js";
 
@@ -6,23 +5,19 @@ import { insertNewKanji } from "./insertNewKanji.js";
  * Adds the provided kanji to the database if they do not already exist.
  * Will notify in the response if kanji attempting to be added are already
  * in the database.
- * @param db
  * @param kanji
  * @returns the successfully added and already existing kanji
  */
-export async function addKanjiToDB(
-  db: Database,
-  kanji: string[]
-): Promise<any> {
+export async function addKanjiToDB(kanji: string[]): Promise<any> {
   try {
     // remove any duplicates within the list
     const uniqueList: string[] = Array.from(new Set(kanji));
     // remove any kanji already added to the db
-    const existingKanji = await checkDuplicateKanji(db, uniqueList);
+    const existingKanji = await checkDuplicateKanji(uniqueList);
     const newKanji = uniqueList.filter(
       (k) => !existingKanji.map((word) => word.kanji).includes(k)
     );
-    const insertedKanji = await insertNewKanji(db, newKanji);
+    const insertedKanji = await insertNewKanji(newKanji);
 
     return {
       status:

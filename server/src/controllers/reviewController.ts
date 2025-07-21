@@ -1,4 +1,3 @@
-import { getDB } from "../utils/database.js";
 import { Request, Response, NextFunction } from "express";
 import {
   startNewSession,
@@ -20,19 +19,18 @@ export const startReview = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
     // first check if a session already exists
-    let sessionId = await existingSession(db);
+    let sessionId = await existingSession();
     if (sessionId) {
       // if it exists, get the current review cards
-      const reviewBatch = await getCurrentBatch(db);
+      const reviewBatch = await getCurrentBatch();
       const prompt = getFullPrompt(reviewBatch);
       const response = await generateResponse(prompt);
       const wordList = formatWordList(reviewBatch.map((word) => word.kanji));
       res.status(201).json({ sessionId, message: response, wordList });
     } else {
-      sessionId = await startNewSession(db);
-      const response = await startReviewService(db, sessionId);
+      sessionId = await startNewSession();
+      const response = await startReviewService(sessionId);
       const wordList = formatWordList(response.wordList);
       res.status(201).json({ sessionId, message: response.passage, wordList });
     }
@@ -47,8 +45,7 @@ export const getSessionInfo = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
-    const session = await getSession(db, Number(req.params.id));
+    const session = await getSession(Number(req.params.id));
     res.json(session);
   } catch (error) {
     next(error);
@@ -61,11 +58,10 @@ export const updateSessionFromReview = async (
   next: NextFunction
 ) => {
   try {
-    const db = getDB();
     const sessionId = Number(req.params.id);
     const { incorrectKanji } = req.body;
 
-    const update = await updateReview(db, sessionId, incorrectKanji);
+    const update = await updateReview(sessionId, incorrectKanji);
 
     let response = "";
     let status = "";
@@ -77,7 +73,7 @@ export const updateSessionFromReview = async (
       status = "Complete";
       response = "All scheduled cards reviewed! Congratulations!";
       // delete the session data since it has been completed
-      await deleteSession(db, Number(req.params.id));
+      await deleteSession(Number(req.params.id));
     } else {
       // return to the user the next cards to review
       message = "Session updated";

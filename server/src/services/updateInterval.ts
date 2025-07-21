@@ -1,29 +1,28 @@
-import { Database } from "sqlite";
+import pool from "../utils/db.js";
 
 /**
  * Resets the interval (index) for the SRS schedule
- * @param db
  * @param kanji
  * @returns
  */
-export async function updateIncorrectKanji(db: Database, kanji: string[]) {
+export async function updateIncorrectKanji(kanji: string[]) {
   if (!kanji) return;
-  const placeholders = kanji.map(() => "?").join(", ");
+  const placeholders = kanji.map((_, index) => `$${index + 1}`).join(", ");
   const sql = `UPDATE words
                 SET 
                   review_stage = 0,
                   review_date = CURRENT_DATE
                 WHERE kanji IN (${placeholders})`;
-  await db.all(sql, kanji);
+  await pool.query(sql, kanji);
 }
 
-export async function updateCorrectKanji(db: Database, kanji: string[]) {
+export async function updateCorrectKanji(kanji: string[]) {
   if (!kanji) return;
-  const placeholders = kanji.map(() => "?").join(", ");
+  const placeholders = kanji.map((_, index) => `$${index + 1}`).join(", ");
   const sql = `UPDATE words
                 SET 
                   review_stage = review_stage + 1,
                   review_date = CURRENT_DATE
                 WHERE kanji IN (${placeholders})`;
-  await db.all(sql, kanji);
+  await pool.query(sql, kanji);
 }

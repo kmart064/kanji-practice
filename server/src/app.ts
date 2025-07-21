@@ -1,7 +1,6 @@
+import pool from "./utils/db.js";
 import express from "express";
 import cors from "cors";
-import * as dotenv from "dotenv";
-import { getDB, initializeDB } from "./utils/database.js";
 import { syncSrsScheduleFromEnv } from "./utils/srsSchedule.js";
 
 // Create an instance of Express
@@ -19,18 +18,8 @@ app.use(
   })
 );
 
-// Load environment-specific configuration
-const env = process.env.NODE_ENV || "development";
-dotenv.config({ path: `.env.${env}` });
-
 console.log("API URL:", process.env.API_URL);
 
-// Get the DB_PATH from environment variables
-const dbPath = process.env.DB_PATH;
-
-if (dbPath) {
-  await initializeDB(dbPath);
-  await syncSrsScheduleFromEnv(getDB()); // sync the srs schedule from settings
-} else process.exit("DB_PATH not specified.");
+await syncSrsScheduleFromEnv(); // sync the srs schedule from settings
 
 export default app;

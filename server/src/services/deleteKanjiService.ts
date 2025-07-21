@@ -1,15 +1,14 @@
-import { Database } from "sqlite";
+import pool from "../utils/db.js";
 
-export async function deleteKanjiService(db: Database, kanji: string[]) {
+export async function deleteKanjiService(kanji: string[]) {
   try {
     if (kanji.length < 1) return;
-    // remove any duplicates within the list
-    const uniqueList: string[] = Array.from(new Set(kanji));
+    const uniqueList = Array.from(new Set(kanji));
 
-    const query = `DELETE FROM words WHERE kanji IN ${uniqueList
-      .map(() => "(?)")
-      .join(", ")}`;
-    await db.run(query, uniqueList);
+    const placeholders = uniqueList.map((_, i) => `$${i + 1}`).join(", ");
+    const query = `DELETE FROM words WHERE kanji IN (${placeholders})`;
+
+    await pool.query(query, uniqueList);
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(error.message);

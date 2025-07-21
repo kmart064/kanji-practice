@@ -1,4 +1,3 @@
-import { Database } from "sqlite";
 import { getDueKanji } from "./getDueKanji.js";
 import { shuffleArray } from "../utils/shuffle.js";
 import { updateSession } from "./reviewSessions.js";
@@ -14,11 +13,10 @@ interface StudyResponse {
 }
 
 export async function startReviewService(
-  db: Database,
   sessionId: number
 ): Promise<StudyResponse> {
   // get the kanji due for review
-  const reviewKanji = await getDueKanji(db);
+  const reviewKanji = await getDueKanji();
 
   // if there's no cards to review, then simply let the user know and exit
   if (reviewKanji.length === 0) {
@@ -53,7 +51,7 @@ export async function startReviewService(
     });
   });
 
-  await updateSession(db, sessionId, reviewEntries);
+  await updateSession(sessionId, reviewEntries);
 
   const prompt = getFullPrompt(reviewBatch);
   const wordList = reviewBatch.map((word) => word.kanji);
