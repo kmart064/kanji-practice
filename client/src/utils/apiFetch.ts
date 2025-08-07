@@ -3,6 +3,7 @@ const API_USER = import.meta.env.VITE_API_USER || "";
 const API_PASS = import.meta.env.VITE_API_PASS || "";
 const PORT = import.meta.env.VITE_SERVER_PORT || "3001";
 const LOCAL = import.meta.env.VITE_LOCAL_MODE === "true" ? true : false;
+const HOST = import.meta.env.VITE_HOST || "localhost";
 
 const authHeader = "Basic " + btoa(`${API_USER}:${API_PASS}`);
 
@@ -12,7 +13,7 @@ const authHeader = "Basic " + btoa(`${API_USER}:${API_PASS}`);
  * @param options Optional fetch options
  */
 export async function apiFetch(path: string, options: RequestInit = {}) {
-  let url = `http://localhost:${PORT}${path}`;
+  let url = `http://${HOST}:${PORT}${path}`;
   if (!LOCAL) url = `${API_BASE_URL}${path}`;
 
   const baseHeaders = {

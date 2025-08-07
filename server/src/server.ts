@@ -13,6 +13,6 @@ app.use("/review", reviewRouter);
 // Global error middleware should be the last middleware
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(3001, "0.0.0.0", () => {
+  console.log("Listening on port 3001");
 });
