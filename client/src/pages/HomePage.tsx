@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Layout from "../components/Layout";
+import Layout from "../shared/components/Layout";
 
 export default function HomePage() {
   return (

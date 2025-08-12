@@ -9,8 +9,10 @@ import {
   findSimilarKanji,
   getKanjiList,
 } from "../controllers/deckManagerController.js";
+import { authenticateToken } from "../middlewares/authenticate.js";
 
 const router = express.Router();
+router.use(authenticateToken);
 
 // Wrap async route handlers to properly forward errors
 const asyncHandler =

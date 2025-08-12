@@ -3,8 +3,10 @@ import {
   startReview,
   updateSessionFromReview,
 } from "../controllers/reviewController.js";
+import { authenticateToken } from "../middlewares/authenticate.js";
 
 const router = express.Router();
+router.use(authenticateToken);
 
 // Wrap async route handlers to properly forward errors
 const asyncHandler =

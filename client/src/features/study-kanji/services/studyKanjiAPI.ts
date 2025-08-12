@@ -1,4 +1,4 @@
-import { apiFetch } from "../../utils/apiFetch";
+import { apiFetch } from "../../../utils/apiFetch";
 
 export async function startStudying(): Promise<{
   sessionId: number;

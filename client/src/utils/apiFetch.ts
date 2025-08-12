@@ -1,46 +1,67 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
-const API_USER = import.meta.env.VITE_API_USER || "";
-const API_PASS = import.meta.env.VITE_API_PASS || "";
 const LOCAL = import.meta.env.VITE_LOCAL_MODE === "true" ? true : false;
 const HOST = import.meta.env.VITE_HOST || "localhost";
 
-const authHeader = "Basic " + btoa(`${API_USER}:${API_PASS}`);
-
-/**
- * A wrapper for fetch that automatically includes basic auth and base URL
- * @param path The endpoint path
- * @param options Optional fetch options
- */
-export async function apiFetch(path: string, options: RequestInit = {}) {
+export async function apiFetch(
+  path: string,
+  options: RequestInit = {},
+  retry = true
+) {
   let url = `https://${HOST}${path}`;
   if (!LOCAL) url = `${API_BASE_URL}${path}`;
 
-  const baseHeaders = {
-    Authorization: authHeader,
+  // Read access token from localStorage
+  let accessToken = localStorage.getItem("accessToken");
+
+  const baseHeaders: Record<string, string> = {
     "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "true",
   };
 
-  // Ensure headers are valid objects before merging
-  const mergedHeaders =
-    typeof options.headers === "object" && options.headers !== null
-      ? { ...baseHeaders, ...options.headers }
-      : baseHeaders;
+  if (accessToken) {
+    baseHeaders.Authorization = `Bearer ${accessToken}`;
+  }
 
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...baseHeaders,
+      ...(options.headers || {}),
+    },
+    credentials: "include", // needed for refresh token cookies
+  });
+
+  // If unauthorized and retry allowed → try refresh
+  if (response.status === 401 && retry) {
+    const refreshed = await refreshAccessToken();
+    if (refreshed) {
+      // Try again with new token
+      return apiFetch(path, options, false);
+    }
+  }
+
+  if (!response.ok) {
+    throw new Error(`API request failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+async function refreshAccessToken(): Promise<boolean> {
   try {
-    const response = await fetch(url, {
-      ...options,
-      headers: mergedHeaders,
+    const response = await fetch("/api/refresh", {
+      method: "POST",
+      credentials: "include",
     });
 
     if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error ${response.status}: ${text}`);
+      return false;
     }
 
-    return response.json();
-  } catch (err) {
-    console.error(`Fetch failed for ${url}`, err);
-    throw new Error(`Failed to fetch from ${url}: ${err}`);
+    const data = await response.json();
+    localStorage.setItem("accessToken", data.accessToken);
+    return true;
+  } catch {
+    return false;
   }
 }

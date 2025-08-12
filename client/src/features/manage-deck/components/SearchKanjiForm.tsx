@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { searchKanji } from "./searchKanjiAPI";
+import { searchKanji } from "../services/searchKanjiAPI";
 
 export default function SearchKanjiForm() {
   const [searchTerm, setSearchTerm] = useState("");

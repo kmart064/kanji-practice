@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { deleteKanji } from "./deleteKanjiAPI";
+import { addKanji } from "../services/addKanjiAPI";
 
-export default function DeleteKanjiForm() {
+export default function AddKanjiForm() {
   const [inputText, setKanji] = useState("");
   const [message, setMessage] = useState("");
 
@@ -18,16 +18,24 @@ export default function DeleteKanjiForm() {
               .replace(/[^\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]+/gu, "") // remove non-Japanese chars
         )
         .filter((k) => k !== "");
-      const response = await deleteKanji(kanjiArray);
+      const response = await addKanji(kanjiArray);
       let msg = `${response.message}`;
+
+      if (response.inserted.length > 0) {
+        msg += `\nInserted: ${response.inserted}`;
+      }
+
+      if (response.duplicates.length > 0) {
+        msg += `\nDuplicates: ${response.duplicates}`;
+      }
 
       setMessage(msg);
     } catch (err) {
       console.error(err);
       if (err instanceof Error) {
-        alert("Failed to delete kanji: " + err.message);
+        alert("Failed to add kanji: " + err.message);
       } else {
-        alert("Failed to delete kanji: Unknown error");
+        alert("Failed to add kanji: Unknown error");
       }
     }
   };
@@ -47,9 +55,9 @@ export default function DeleteKanjiForm() {
       <div className="flex justify-center">
         <button
           type="submit"
-          className="px-8 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition duration-150 shadow"
+          className="px-8 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-150 shadow"
         >
-          Delete
+          Add
         </button>
       </div>
       {message && (

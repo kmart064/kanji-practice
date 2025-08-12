@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { startStudying, updateStudySession } from "./studyKanjiAPI";
+import { startStudying, updateStudySession } from "../services/studyKanjiAPI";
 
 export default function StudyKanjiPage() {
   const [message, setMessage] = useState<string>("");

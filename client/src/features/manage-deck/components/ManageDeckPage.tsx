@@ -1,5 +1,5 @@
-import AddKanjiForm from "./addKanjiForm";
-import DeleteKanjiForm from "./deleteKanjiForm";
+import AddKanjiForm from "./AddKanjiForm";
+import DeleteKanjiForm from "./DeleteKanjiForm";
 import SearchKanjiForm from "./SearchKanjiForm";
 import {
   PlusIcon,
