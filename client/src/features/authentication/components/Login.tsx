@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/login";
 
-export default function Login() {
+interface LoginProps {
+  onLogin: () => void;
+}
+
+export default function Login({ onLogin }: LoginProps) {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -22,6 +26,7 @@ export default function Login() {
     setError(null);
     try {
       await login(username, password);
+      onLogin(); // call the prop function to update login state
       navigate("/"); // redirect to home after login
     } catch (err) {
       setError((err as Error).message || "Login failed");

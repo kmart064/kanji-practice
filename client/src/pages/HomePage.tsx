@@ -9,7 +9,7 @@ export default function HomePage() {
           <div className="space-y-4">
             <div className="flex justify-center">
               <Link
-                to="/add"
+                to="/manage"
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow"
               >
                 Manage Deck

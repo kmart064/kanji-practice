@@ -1,28 +1,40 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import AddKanjiPage from "./features/manage-deck/components/AddKanjiForm";
 import StudyKanjiPage from "./features/study-kanji/components/StudyKanjiPage";
 import LoginPage from "./features/authentication/components/Login";
+import ManageDeckPage from "./features/manage-deck/components/ManageDeckPage";
+import { useState, useEffect } from "react";
 
 function App() {
-  const isLoggedIn = !!localStorage.getItem("accessToken");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("accessToken")
+  );
+
+  // Listen for localStorage changes (if token is updated elsewhere)
+  useEffect(() => {
+    function onStorageChange() {
+      setIsLoggedIn(!!localStorage.getItem("accessToken"));
+    }
+    window.addEventListener("storage", onStorageChange);
+    return () => window.removeEventListener("storage", onStorageChange);
+  }, []);
 
   return (
     <BrowserRouter>
       <Routes>
         {!isLoggedIn ? (
           <>
-            {/* Redirect all routes to login if not logged in */}
-            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/login"
+              element={<LoginPage onLogin={() => setIsLoggedIn(true)} />}
+            />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </>
         ) : (
           <>
-            {/* Logged in routes */}
             <Route path="/" element={<HomePage />} />
-            <Route path="/add" element={<AddKanjiPage />} />
+            <Route path="/manage" element={<ManageDeckPage />} />
             <Route path="/study" element={<StudyKanjiPage />} />
-            {/* Redirect unknown routes to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         )}
