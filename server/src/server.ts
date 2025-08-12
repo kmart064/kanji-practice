@@ -1,6 +1,7 @@
 import "./preload.js";
 
 import app from "./app.js";
+import authRouter from "./routes/authRoutes.js";
 import deckManagerRouter from "./routes/deckManagerRoutes.js";
 import reviewRouter from "./routes/reviewRoutes.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
@@ -22,9 +23,14 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
+    credentials: true,
   })
 );
 
+// Also add explicit OPTIONS handler to respond to preflight for all routes
+app.options("*", cors());
+
+app.use("/api", authRouter);
 app.use("/api", deckManagerRouter);
 app.use("/review", reviewRouter);
 

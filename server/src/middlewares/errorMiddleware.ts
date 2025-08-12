@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../utils/logger.js";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://kanji-practice-omega.vercel.app",
+];
+
 export function errorHandler(
   err: unknown,
   req: Request,
@@ -11,9 +16,13 @@ export function errorHandler(
   const errorMessage =
     err instanceof Error ? err.message : "Internal server error";
 
-  // Always send CORS headers on errors
-  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.header("Access-Control-Allow-Credentials", "true");
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+  } else {
+    res.header("Access-Control-Allow-Origin", "null");
+  }
 
   res.status(500).json({
     status: "error",
