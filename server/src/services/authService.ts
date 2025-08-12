@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 
 export async function loginUser(username: string, password: string) {
   const result = await pool.query(
-    "SELECT id, username FROM users WHERE username = $1",
+    "SELECT id, username, password_hash FROM users WHERE username = $1",
     [username]
   );
   if (result.rowCount === 0) {
