@@ -2,7 +2,7 @@ import { apiFetch } from "../../../utils/apiFetch";
 
 export async function login(username: string, password: string) {
   const data = await apiFetch(
-    "/api/login",
+    "/api/auth/login",
     {
       method: "POST",
       credentials: "include", // needed to set the HttpOnly refresh cookie

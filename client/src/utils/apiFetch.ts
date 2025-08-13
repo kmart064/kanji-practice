@@ -32,7 +32,7 @@ export async function apiFetch(
   });
 
   // If unauthorized and retry allowed → try refresh
-  if (response.status === 401 && retry) {
+  if ((response.status === 401 || response.status === 403) && retry) {
     const refreshed = await refreshAccessToken();
     if (refreshed) {
       // Try again with new token
@@ -49,17 +49,17 @@ export async function apiFetch(
 
 async function refreshAccessToken(): Promise<boolean> {
   try {
-    const response = await fetch("/api/refresh", {
-      method: "POST",
-      credentials: "include",
-    });
+    const response = await apiFetch(
+      "/api/auth/refresh",
+      { method: "POST", credentials: "include" },
+      false
+    );
 
-    if (!response.ok) {
+    if (!response || !response.accessToken) {
       return false;
     }
 
-    const data = await response.json();
-    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("accessToken", response.accessToken);
     return true;
   } catch {
     return false;
