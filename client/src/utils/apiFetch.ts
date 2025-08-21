@@ -1,4 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 const LOCAL = import.meta.env.VITE_LOCAL_MODE === "true" ? true : false;
 const HOST = import.meta.env.VITE_HOST || "localhost";
 
@@ -7,8 +6,8 @@ export async function apiFetch(
   options: RequestInit = {},
   retry = true
 ) {
-  let url = `https://${HOST}${path}`;
-  if (!LOCAL) url = `${API_BASE_URL}${path}`;
+  let url = `http://${HOST}:3001${path}`;
+  if (!LOCAL) url = `https://${HOST}${path}`;
 
   // Read access token from localStorage
   let accessToken = localStorage.getItem("accessToken");
