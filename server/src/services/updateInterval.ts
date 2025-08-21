@@ -6,7 +6,7 @@ import pool from "../utils/db.js";
  * @returns
  */
 export async function updateIncorrectKanji(kanji: string[]) {
-  if (!kanji) return;
+  if (!kanji || kanji.length === 0) return;
   const placeholders = kanji.map((_, index) => `$${index + 1}`).join(", ");
   const sql = `UPDATE words
                 SET 
@@ -17,7 +17,7 @@ export async function updateIncorrectKanji(kanji: string[]) {
 }
 
 export async function updateCorrectKanji(kanji: string[]) {
-  if (!kanji) return;
+  if (!kanji || kanji.length === 0) return;
   const placeholders = kanji.map((_, index) => `$${index + 1}`).join(", ");
   const sql = `UPDATE words
                 SET 
