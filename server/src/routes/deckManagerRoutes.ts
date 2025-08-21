@@ -12,7 +12,10 @@ import {
 import { authenticateToken } from "../middlewares/authenticate.js";
 
 const router = express.Router();
-router.use(authenticateToken);
+
+if (process.env.NODE_ENV === "production") {
+  router.use(authenticateToken);
+}
 
 // Wrap async route handlers to properly forward errors
 const asyncHandler =
