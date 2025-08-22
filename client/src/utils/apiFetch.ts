@@ -30,7 +30,7 @@ export async function apiFetch(
     credentials: "include", // needed for refresh token cookies
   });
 
-  // If unauthorized and retry allowed → try refresh
+  // If unauthorized and retry allowed, try refresh
   if ((response.status === 401 || response.status === 403) && retry) {
     const refreshed = await refreshAccessToken();
     if (refreshed) {
@@ -55,12 +55,27 @@ async function refreshAccessToken(): Promise<boolean> {
     );
 
     if (!response || !response.accessToken) {
+      handleAuthFailure();
       return false;
     }
 
     localStorage.setItem("accessToken", response.accessToken);
     return true;
   } catch {
+    handleAuthFailure();
     return false;
   }
+}
+
+function handleAuthFailure() {
+  // Clear any stored tokens
+  localStorage.removeItem("accessToken");
+
+  // Optionally call logout endpoint to clear cookie
+  fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(
+    () => {}
+  );
+
+  // Redirect to login page
+  window.location.href = "/login";
 }
