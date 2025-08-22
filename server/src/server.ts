@@ -5,9 +5,13 @@ import authRoutes from "./routes/authRoutes.js";
 import deckManagerRouter from "./routes/deckManagerRoutes.js";
 import reviewRouter from "./routes/reviewRoutes.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
-import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
+import cors, { CorsOptions, CorsOptionsDelegate } from "cors";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const port = Number(process.env.PORT) || 5000;
 
@@ -16,21 +20,27 @@ const allowedOrigins = [
   "https://kanji-practice-omega.vercel.app",
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-// Also add explicit OPTIONS handler to respond to preflight for all routes
-app.options("*", cors());
+// Use CORS for all routes
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight with the same options
+app.options("*", cors(corsOptions));
 
 app.use("/api/auth", authRoutes);
 app.use("/api", deckManagerRouter);
