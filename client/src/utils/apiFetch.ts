@@ -14,7 +14,6 @@ export async function apiFetch(
 
   const baseHeaders: Record<string, string> = {
     "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true",
   };
 
   if (accessToken) {
