@@ -1,4 +1,4 @@
-import { getDueKanji } from "./getDueKanji.js";
+import { getAdjustedDueKanji } from "./getDueKanji.js";
 import { shuffleArray } from "../utils/shuffle.js";
 import { updateSession } from "./reviewSessions.js";
 import { getFullPrompt } from "./getReadingPassage.js";
@@ -16,7 +16,7 @@ export async function startReviewService(
   sessionId: number
 ): Promise<StudyResponse> {
   // get the kanji due for review
-  const reviewKanji = await getDueKanji();
+  const reviewKanji = await getAdjustedDueKanji();
 
   // if there's no cards to review, then simply let the user know and exit
   if (reviewKanji.length === 0) {

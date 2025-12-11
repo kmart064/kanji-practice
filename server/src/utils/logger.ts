@@ -1,21 +1,28 @@
-import { createLogger, format, transports } from "winston";
-import dotenv from "dotenv";
-import path from "path";
+import winston from "winston";
 
-// Load environment variables
-dotenv.config();
+const isProd = process.env.NODE_ENV === "production";
 
-const logFilePath = process.env.LOG_FILE_PATH || path.join(process.cwd(), "logs/error.log");
+let logger: winston.Logger;
 
-const logger = createLogger({
-  level: "error",
-  format: format.combine(
-    format.timestamp(),
-    format.json()
-  ),
-  transports: [
-    new transports.File({ filename: logFilePath }),
-  ],
-});
+if (isProd) {
+  logger = winston.createLogger({
+    transports: [],
+    silent: true, // nothing is logged
+  });
+} else {
+  logger = winston.createLogger({
+    level: "debug",
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.printf(({ timestamp, level, message }) => {
+        return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+      })
+    ),
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ filename: "logs/debug.log" }),
+    ],
+  });
+}
 
 export default logger;

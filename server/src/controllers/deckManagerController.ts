@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { addKanjiToDB } from "../services/addKanjiToDB.js";
-import { getDueKanji } from "../services/getDueKanji.js";
 import { validationResult } from "express-validator";
 import { findSamePrefixKanji } from "../services/findSamePrefixKanji.js";
 import { deleteKanjiService } from "../services/deleteKanjiService.js";
+import { getAdjustedDueKanji } from "../services/getDueKanji.js";
 
 export const addKanji = async (
   req: Request,
@@ -31,7 +31,7 @@ export const getKanjiList = async (
   next: NextFunction
 ) => {
   try {
-    const kanjiList = await getDueKanji();
+    const kanjiList = await getAdjustedDueKanji();
     res.status(201).json(kanjiList);
   } catch (error) {
     next(error);
