@@ -3,15 +3,33 @@ import { startStudying, updateStudySession } from "../services/studyKanjiAPI";
 
 export default function StudyKanjiPage() {
   const [message, setMessage] = useState<string>("");
-  const [input, setInput] = useState<string>("");
   const [sessionActive, setSessionActive] = useState<boolean>(false);
   const [sessionId, setSessionId] = useState<number>();
   const [wordList, setWordList] = useState<string>("");
-  const [showWordList, setShowWordList] = useState<boolean>(false);
+
+  // New: store checked (forgotten) kanji
+  const [forgotten, setForgotten] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    setShowWordList(false); // always hide on update
+    setForgotten({});
   }, [message]);
+
+  // Convert the string wordList → array
+  const kanjiArray = wordList
+    ? wordList
+        .split(/\r?\n/) // split by lines
+        .map(
+          (s) => s.trim().replace(/^\d+\.\s*/, "") // remove leading "1. " or "23. "
+        )
+        .filter(Boolean)
+    : [];
+
+  const toggleForgotten = (kanji: string) => {
+    setForgotten((prev) => ({
+      ...prev,
+      [kanji]: !prev[kanji],
+    }));
+  };
 
   const startSession = async () => {
     const response = await startStudying();
@@ -22,19 +40,27 @@ export default function StudyKanjiPage() {
   };
 
   const handleSubmit = async () => {
-    const kanjiArray = input
-      .split(",")
-      .map((k) => k.trim())
-      .filter(Boolean);
     if (!sessionId) throw Error("No sessionId assigned for study session.");
-    const response = await updateStudySession(sessionId, kanjiArray);
+
+    // Convert checked kanji → comma-separated list (same as before)
+    const forgottenKanjiArray = Object.entries(forgotten)
+      .filter(([_, checked]) => checked)
+      .map(([kanji]) => kanji);
+
+    const response = await updateStudySession(sessionId, forgottenKanjiArray);
+
     setMessage(`${response.message}\n${response.response}`);
     setWordList(response.wordList || "");
-    setInput("");
+    setForgotten({}); // reset after submission
 
     if (response.status === "Complete") {
       setSessionActive(false);
     }
+  };
+
+  const copyKanjiList = async () => {
+    const kanjiCSV = kanjiArray.join(", ");
+    await navigator.clipboard.writeText(kanjiCSV);
   };
 
   return (
@@ -51,20 +77,12 @@ export default function StudyKanjiPage() {
         )}
 
         {wordList && (
-          <div>
-            <button
-              onClick={() => setShowWordList((prev) => !prev)}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition mb-2 mx-auto block"
-            >
-              {showWordList ? "Hide Word List" : "Show Word List"}
-            </button>
-
-            {showWordList && (
-              <pre className="bg-gray-50 dark:bg-gray-700 dark:text-white p-4 rounded-lg whitespace-pre-wrap border border-gray-300 dark:border-gray-600 text-sm">
-                {wordList}
-              </pre>
-            )}
-          </div>
+          <button
+            onClick={copyKanjiList}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition mx-auto block"
+          >
+            Copy Kanji List
+          </button>
         )}
 
         {!sessionActive ? (
@@ -78,12 +96,29 @@ export default function StudyKanjiPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            <textarea
-              className="w-full h-32 p-3 border rounded-lg dark:bg-gray-900 dark:text-white dark:border-gray-600"
-              placeholder="Enter forgotten kanji, comma-separated"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
+            <div className="grid grid-cols-2 gap-4 justify-items-center">
+              {kanjiArray.map((kanji) => (
+                <div
+                  key={kanji}
+                  className="flex bg-gray-50 dark:bg-gray-700 p-2 rounded-lg"
+                  style={{ minWidth: 160 }} // optional: helps keep consistent cell widths
+                >
+                  {/* fixed-width checkbox column — ensures checkboxes line up */}
+                  <div className="w-6 flex-shrink-0 flex justify-center">
+                    <input
+                      type="checkbox"
+                      checked={!!forgotten[kanji]}
+                      onChange={() => toggleForgotten(kanji)}
+                    />
+                  </div>
+
+                  {/* text column — centered and allowed to wrap */}
+                  <div className="ml-2 dark:text-white break-words">
+                    {kanji}
+                  </div>
+                </div>
+              ))}
+            </div>
 
             <button
               onClick={handleSubmit}
