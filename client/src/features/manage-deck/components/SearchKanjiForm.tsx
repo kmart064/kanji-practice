@@ -11,7 +11,10 @@ export default function SearchKanjiForm() {
       const searchPrefix = searchTerm
         .trim()
         .replace(/^["']|["']$/g, "") // remove surrounding quotes
-        .replace(/[^\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}ー々]+/gu, ""); // remove non-Japanese chars
+        .replace(
+          /[^\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}()（）ー々～]+/gu,
+          ""
+        ); // remove non-Japanese chars
       const response = await searchKanji(searchPrefix);
       setResults(response);
     } catch (err) {
