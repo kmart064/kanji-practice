@@ -1,0 +1,78 @@
+@import "../../styles/progress.css";
+@import "../../styles/glass.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply text-gray-800 min-h-screen;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0px, 0px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.4;
+  }
+  75% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(var(--move-x), var(--move-y));
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float linear infinite;
+}
+
+.btn-tinted {
+  @apply px-5 py-2.5 rounded-xl font-medium tracking-wide
+         backdrop-blur-lg
+         transition-all duration-300
+         border
+         active:scale-[0.98]
+         hover:shadow-lg;
+
+  background-color: rgb(var(--btn-color) / 0.2);
+  border-color: rgb(var(--btn-color) / 0.35);
+  color: rgb(var(--btn-color-strong));
+}
+
+.btn-tinted:hover {
+  background-color: rgb(var(--btn-color) / 0.3);
+  border-color: rgb(var(--btn-color) / 0.45);
+  color: rgb(var(--btn-color-light));
+}
+
+.btn-blue {
+  --btn-color: 59 130 246; /* blue-500 */
+  --btn-color-strong: 30 64 175; /* blue-800 */
+  --btn-color-light: 255 255 255; /* white */
+}
+
+.btn-green {
+  --btn-color: 34 197 94; /* green-500 */
+  --btn-color-strong: 21 128 61; /* green-800 */
+  --btn-color-light: 255 255 255;
+}
+
+.btn-purple {
+  --btn-color: 168 85 247; /* purple-500 */
+  --btn-color-strong: 107 33 168; /* purple-800 */
+  --btn-color-light: 255 255 255;
+}
+
+.btn-red {
+  --btn-color: 239 68 68; /* red-500 */
+  --btn-color-strong: 153 27 27; /* red-800 */
+  --btn-color-light: 255 255 255;
+}

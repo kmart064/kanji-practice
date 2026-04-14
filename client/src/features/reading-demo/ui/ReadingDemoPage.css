@@ -1,0 +1,43 @@
+body {
+  overflow-x: hidden;
+}
+
+.word-card {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.hidden-word {
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.placeholder {
+  background: #eee;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.word {
+  color: #000;
+}
+
+.answer-buttons button {
+  margin-right: 10px;
+}
+
+.correct {
+  background: #8bc34a;
+}
+
+.incorrect {
+  background: #f44336;
+}
+
+.translation {
+  margin-top: 10px;
+  font-style: italic;
+}
