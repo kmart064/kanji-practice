@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { ManageDeckPage } from "@/features/manage-deck";
+import { GrammarDemoPage } from "@/features/grammar-demo";
 import { ReadingDemoPage } from "@/features/reading-demo";
+import { StatisticsPage } from "@/features/statistics";
 import { StudyKanjiPage } from "@/features/study-kanji";
 import { HomePage } from "@/pages/home";
 import { LoginPage } from "@/pages/login";
@@ -40,6 +42,8 @@ export function AppRouter() {
               <Route path="manage" element={<ManageDeckPage />} />
               <Route path="study" element={<StudyKanjiPage />} />
               <Route path="rdemo" element={<ReadingDemoPage />} />
+              <Route path="grammar-demo" element={<GrammarDemoPage />} />
+              <Route path="statistics" element={<StatisticsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </>
           )}
