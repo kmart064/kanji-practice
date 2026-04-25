@@ -13,7 +13,7 @@ export default function GlassPanel({
     <div
       className={`
         w-full max-w-md p-6 text-center space-y-6
-        glass
+        panel-surface
         ${className}
       `}
     >

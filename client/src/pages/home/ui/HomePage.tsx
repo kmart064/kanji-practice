@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function HomePage() {
   return (
     <div className="py-4 lg:py-8">
-      <div className="glass mx-auto w-full max-w-3xl rounded-[2rem] p-8 text-center">
+      <div className="panel-surface mx-auto w-full max-w-3xl rounded-[2rem] p-8 text-center">
         <div className="space-y-3">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
             Dashboard

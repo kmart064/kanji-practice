@@ -67,7 +67,7 @@ export default function StudyKanjiPage() {
         Study Kanji
       </h1>
 
-      <div className="glass-opaque p-6 rounded-2xl shadow-lg space-y-4">
+      <div className="panel-surface p-6 rounded-2xl shadow-lg space-y-4">
         {message && (
           <div className="glass-opaque text-sm p-4 rounded whitespace-pre-wrap">
             {message}

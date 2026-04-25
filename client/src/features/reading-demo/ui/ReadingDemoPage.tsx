@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { HomeIcon } from "@heroicons/react/24/outline";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 import { demoWords } from "@/features/reading-demo/lib/demoWords";
 import WordCard from "@/features/reading-demo/ui/WordCard";
@@ -20,6 +20,7 @@ const ReadingDemoPage: React.FC = () => {
   const [answer, setAnswer] = useState<boolean | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -140,7 +141,7 @@ const ReadingDemoPage: React.FC = () => {
   if (!item) {
     return (
       <div className="page">
-        <div className="glass p-8 max-w-4xl mx-auto">
+        <div className="panel-surface p-8 max-w-4xl mx-auto">
           <div className="bg-slate-50 backdrop-blur-sm rounded-xl p-6 shadow">
             <div className="text-center mb-6">
               <h1 className="text-3xl font-bold tracking-tight">Results</h1>
@@ -201,30 +202,12 @@ const ReadingDemoPage: React.FC = () => {
 
   return (
     <div className="page">
-      <div className="glass p-8 space-y-6">
-        <div className="controls">
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
-          >
-            <HomeIcon className="w-6 h-6" />
-          </button>
-        </div>
-
+      <div className="panel-surface mx-auto max-w-3xl p-8 space-y-6">
         <div className="text-center mt-6 mb-6">
           <h1 className="text-4xl font-extrabold tracking-tight">
             Kanji Recognition
           </h1>
           <p className="text-gray-500 mt-1">Reading Comprehension Demo</p>
-        </div>
-
-        <div className="bg-white shadow-md p-4 rounded-xl text-sm max-w-md mx-auto">
-          <div className="text-center font-semibold mb-1">Instructions</div>
-          <p>
-            First, try to read the sentence. If you understood it, click the
-            green checkmark. If not, reveal the word. If you still cannot
-            understand, reveal the translation and click the red X.
-          </p>
         </div>
 
         <div className="progress-container">
@@ -239,40 +222,70 @@ const ReadingDemoPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-center">
-          <div className="relative w-full max-w-md h-[260px]">
-            {nextItem && (
-              <div className="absolute inset-0 scale-95 translate-y-2 opacity-70 z-0">
+        <div className="space-y-4">
+          <div className="flex justify-center">
+            <div className="grid w-full max-w-md">
+              {nextItem && (
+                <div className="col-start-1 row-start-1 z-0 translate-y-2 scale-95 opacity-70">
+                  <WordCard
+                    key={nextItem.id}
+                    item={{
+                      ...nextItem,
+                      sentence:
+                        nextItem.sentences[sentenceMap[nextItem.id] ?? 0],
+                      translation:
+                        nextItem.translations[sentenceMap[nextItem.id] ?? 0],
+                    }}
+                    answer={null}
+                    showTranslation={false}
+                    setAnswer={() => {}}
+                    toggleTranslation={() => {}}
+                  />
+                </div>
+              )}
+
+              <div ref={cardRef} className="col-start-1 row-start-1 z-10">
                 <WordCard
-                  key={nextItem.id}
+                  key={item.id}
                   item={{
-                    ...nextItem,
-                    sentence: nextItem.sentences[sentenceMap[nextItem.id] ?? 0],
-                    translation:
-                      nextItem.translations[sentenceMap[nextItem.id] ?? 0],
+                    ...item,
+                    sentence: item.sentences[sentenceIndex],
+                    translation: item.translations[sentenceIndex],
                   }}
-                  answer={null}
-                  showTranslation={false}
-                  setAnswer={() => {}}
-                  toggleTranslation={() => {}}
+                  answer={answer}
+                  showTranslation={showTranslation}
+                  setAnswer={handleAnswer}
+                  toggleTranslation={() => setShowTranslation((prev) => !prev)}
                 />
               </div>
-            )}
-
-            <div ref={cardRef} className="absolute inset-0 z-10">
-              <WordCard
-                key={item.id}
-                item={{
-                  ...item,
-                  sentence: item.sentences[sentenceIndex],
-                  translation: item.translations[sentenceIndex],
-                }}
-                answer={answer}
-                showTranslation={showTranslation}
-                setAnswer={handleAnswer}
-                toggleTranslation={() => setShowTranslation((prev) => !prev)}
-              />
             </div>
+          </div>
+
+          <div className="flex flex-col items-center text-center">
+            <button
+              type="button"
+              onClick={() => setShowInstructions((prev) => !prev)}
+            aria-label={
+              showInstructions ? "Hide instructions" : "Show instructions"
+            }
+            className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
+          >
+            <ChevronUpIcon
+              className={[
+                "h-4 w-4 transition-transform",
+                showInstructions ? "rotate-0" : "rotate-180",
+              ].join(" ")}
+            />
+            <span>Instructions</span>
+          </button>
+
+            {showInstructions ? (
+              <p className="mt-2 max-w-md text-sm text-slate-700">
+                First, try to read the sentence. If you understood it, click
+                the green checkmark. If not, reveal the word. If you still
+                cannot understand, reveal the translation and click the red X.
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
