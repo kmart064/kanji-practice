@@ -21,16 +21,7 @@ export default function Layout() {
             />
           ) : null}
 
-          <main
-            className={[
-              "min-w-0 transition-all duration-300",
-              showSidebar
-                ? isSidebarCollapsed
-                  ? "lg:pl-16"
-                  : "lg:pl-64"
-                : "",
-            ].join(" ")}
-          >
+          <main className="min-w-0">
             <Outlet />
           </main>
         </div>

@@ -202,7 +202,7 @@ const ReadingDemoPage: React.FC = () => {
 
   return (
     <div className="page">
-      <div className="panel-surface mx-auto max-w-3xl p-8 space-y-6">
+      <div className="panel-surface mx-auto max-w-[46rem] p-8 space-y-6">
         <div className="text-center mt-6 mb-6">
           <h1 className="text-4xl font-extrabold tracking-tight">
             Kanji Recognition
