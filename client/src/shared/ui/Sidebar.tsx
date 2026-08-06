@@ -26,10 +26,12 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
       <aside
         className={[
           "w-full lg:fixed lg:left-6 lg:top-6 lg:z-20 lg:w-56 lg:transition-transform lg:duration-300",
-          isCollapsed ? "lg:-translate-x-[calc(100%+2rem)]" : "lg:translate-x-0",
+          isCollapsed
+            ? "lg:-translate-x-[calc(100%+2rem)]"
+            : "lg:translate-x-0",
         ].join(" ")}
       >
-        <div className="glass-opaque rounded-[2rem] border border-white/40 px-3 py-4 shadow-xl">
+        <div className="panel-surface rounded-[2rem] border border-white/40 px-3 py-4 shadow-xl">
           <div className="flex items-start justify-between gap-3 px-2 pb-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
