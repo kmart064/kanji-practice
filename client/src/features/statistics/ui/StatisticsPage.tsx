@@ -1,4 +1,6 @@
 import { GlassPanel } from "@/shared/ui";
+import ReadingProgressChart from "./ReadingProgressChart";
+import { sampleData } from "../model/sampleReadingHistory";
 
 const stats = [
   { label: "Review Streak", value: "12 days" },
@@ -37,6 +39,7 @@ export default function StatisticsPage() {
           ))}
         </div>
       </GlassPanel>
+      <ReadingProgressChart data={sampleData} />
     </div>
   );
 }
