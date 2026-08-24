@@ -5,6 +5,8 @@ import { getKanjiIds } from "./getKanjiIds.js";
 import { ReviewStatus } from "../models/ReviewStatus.js";
 import { shuffleArray } from "../utils/shuffle.js";
 import { keysToCamel } from "../utils/snakeToCamel.js";
+import { updateResults } from "./updateResults.js";
+import { completeReviewSession } from "./reviewSessionHistory.js";
 
 /**
  * Takes in the user's incorrect kanji and updates the database
@@ -18,7 +20,7 @@ import { keysToCamel } from "../utils/snakeToCamel.js";
  */
 export async function updateReview(
   sessionId: number,
-  incorrectKanji: string[]
+  incorrectKanji: string[],
 ): Promise<{ nextReviewCards: ReviewEntry[]; unaddedKanji: string[] }> {
   // get the remaining cards for the session
   let session = (await getSession(sessionId)) ?? [];
@@ -27,13 +29,13 @@ export async function updateReview(
 
   if (cards.length > 0) {
     // check that all submitted incorrect kanji are actually in the batch
-    const reviewSet = new Set(
-      cards
-        .filter((card) => card.status === ReviewStatus.Batch)
-        .map((card) => card.kanji)
+    const currentBatch = cards.filter(
+      (card) => card.status === ReviewStatus.Batch,
     );
+    const currentBatchKanji = new Set(currentBatch.map((card) => card.kanji));
+
     for (const kanji of incorrectKanji) {
-      if (!reviewSet.has(kanji)) {
+      if (!currentBatchKanji.has(kanji)) {
         // if the kanji wasn't part of the review batch, check if it's already in the database
         const kanjiWord = await getKanjiIds([kanji]);
         if (kanjiWord.length) {
@@ -51,7 +53,7 @@ export async function updateReview(
     // get the incorrect kanji ids
     const incorrectWords = await getKanjiIds(incorrectKanji);
     let incorrectWordsMap = new Map(
-      incorrectWords.map((entry) => [entry.kanji, entry])
+      incorrectWords.map((entry) => [entry.kanji, entry]),
     );
 
     // get the correct cards from the review and change the status of batch
@@ -75,14 +77,25 @@ export async function updateReview(
     // update the correct cards review date in the database
     await updateCorrectKanji(correctWords);
 
+    const results = currentBatch.map((card) => ({
+      wordId: card.wordId,
+      correct: !incorrectKanji.includes(card.kanji),
+    }));
+    // update the review results table with the results for this review batch
+    await updateResults(sessionId, results);
+
     // get the next batch to review
     let nextReview = getNextBatch(cards);
 
     // update the session with all the changes
     await updateSession(sessionId, cards);
 
+    if (nextReview.length == 0) {
+      await completeReviewSession(sessionId);
+    }
     return { nextReviewCards: nextReview, unaddedKanji };
   }
+  await completeReviewSession(sessionId);
   return { nextReviewCards: [], unaddedKanji };
 }
 

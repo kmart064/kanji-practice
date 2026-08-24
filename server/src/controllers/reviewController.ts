@@ -16,7 +16,7 @@ import { getGroqPassage } from "../services/groqRequest.js";
 export const startReview = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     // first check if a session already exists
@@ -42,7 +42,7 @@ export const startReview = async (
 export const getSessionInfo = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const session = await getSession(Number(req.params.id));
@@ -55,7 +55,7 @@ export const getSessionInfo = async (
 export const updateSessionFromReview = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const sessionId = Number(req.params.id);
@@ -81,7 +81,7 @@ export const updateSessionFromReview = async (
       const prompt = getFullPrompt(update.nextReviewCards);
       response = await generateResponse(prompt);
       wordList = formatWordList(
-        update.nextReviewCards.map((word) => word.kanji)
+        update.nextReviewCards.map((word) => word.kanji),
       );
     }
 

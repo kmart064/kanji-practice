@@ -5,7 +5,7 @@ import { keysToCamel } from "../utils/snakeToCamel.js";
 
 const REQUIRED_STAGE_REVIEWS = Number(process.env.REQUIRED_STAGE_REVIEWS ?? 2);
 const NONREQUIRED_REVIEW_LIMIT = Number(
-  process.env.NONREQUIRED_REVIEW_LIMIT ?? 100
+  process.env.NONREQUIRED_REVIEW_LIMIT ?? 100,
 );
 const HARD_LIMIT = Number(process.env.HARD_LIMIT);
 
@@ -26,7 +26,7 @@ export async function getDueKanji(): Promise<ReviewWord[]> {
   `;
   const result = await pool.query(sql);
   const rows: ReviewWord[] = result.rows.map((row) =>
-    keysToCamel<ReviewWord>(row)
+    keysToCamel<ReviewWord>(row),
   );
 
   return rows;
@@ -46,13 +46,16 @@ export async function getAdjustedDueKanji(): Promise<ReviewWord[]> {
   }
 
   const requiredCards = dueWords.filter(
-    (w) => w.reviewStage <= REQUIRED_STAGE_REVIEWS
+    (w) => w.reviewStage <= REQUIRED_STAGE_REVIEWS,
   );
   const nonrequiredCards = dueWords.filter(
-    (w) => w.reviewStage > REQUIRED_STAGE_REVIEWS
+    (w) => w.reviewStage > REQUIRED_STAGE_REVIEWS,
   );
 
-  if (nonrequiredCards.length <= NONREQUIRED_REVIEW_LIMIT) {
+  if (
+    nonrequiredCards.length <= NONREQUIRED_REVIEW_LIMIT &&
+    dueWords.length <= HARD_LIMIT
+  ) {
     logger.info(` All due cards will be reviewed today.`);
     logger.info(`       Required: ${requiredCards.length}`);
     logger.info(`       Nonrequired: ${nonrequiredCards.length}`);
@@ -80,7 +83,7 @@ export async function getAdjustedDueKanji(): Promise<ReviewWord[]> {
   // Select cards up to limit
   const selectedNonrequired = nonrequiredCards.slice(
     0,
-    NONREQUIRED_REVIEW_LIMIT
+    NONREQUIRED_REVIEW_LIMIT,
   );
   let nonrequiredSkippedCount =
     nonrequiredCards.length - selectedNonrequired.length;

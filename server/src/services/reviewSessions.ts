@@ -2,21 +2,43 @@ import pool from "../utils/db.js";
 import { ReviewEntry } from "../models/ReviewEntry.js";
 
 export async function startNewSession(): Promise<number> {
-  const result = await pool.query(
-    "INSERT INTO sessions (created_at) VALUES (CURRENT_TIMESTAMP) RETURNING id"
-  );
+  const client = await pool.connect();
 
-  const newId = result.rows[0]?.id;
+  try {
+    await client.query("BEGIN");
 
-  if (typeof newId !== "number") {
-    throw new Error("Failed to create new session.");
+    const result = await client.query(
+      "INSERT INTO sessions (created_at) VALUES (CURRENT_TIMESTAMP) RETURNING id",
+    );
+
+    const newId = result.rows[0]?.id;
+
+    if (typeof newId !== "number") {
+      throw new Error("Failed to create new session.");
+    }
+
+    await client.query(
+      `
+      INSERT INTO review_sessions_history
+        (session_id, started_at)
+      VALUES ($1, CURRENT_TIMESTAMP)
+    `,
+      [newId],
+    );
+
+    await client.query("COMMIT");
+
+    return newId;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
   }
-
-  return newId;
 }
 
 export async function getSession(
-  sessionId: number
+  sessionId: number,
 ): Promise<ReviewEntry[] | undefined> {
   const sql = `
     SELECT review_sessions.word_id, words.kanji, review_sessions.status
@@ -32,7 +54,7 @@ export async function getSession(
 
 export async function updateSession(
   sessionId: number,
-  reviews: ReviewEntry[]
+  reviews: ReviewEntry[],
 ): Promise<void> {
   if (!reviews || reviews.length === 0) return;
 
