@@ -1,8 +1,10 @@
 {
   "type": "module",
   "scripts": {
-    "start:dev": "NODE_ENV=development ts-node src/server.ts",
-    "start:prod": "NODE_ENV=production ts-node src/server.ts"
+    "start:dev": "NODE_ENV=development tsx src/server.ts",
+    "start:test": "NODE_ENV=testing tsx src/server.ts",
+    "build": "tsc",
+    "start:prod": "NODE_ENV=production node dist/server.js"
   },
   "dependencies": {
     "@types/node": "^22.7.4",
@@ -26,6 +28,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.15.4",
     "@types/sqlite3": "^3.1.11",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode-terminal": "^0.12.0",
+    "tsx": "^4.23.12"
   }
 }
