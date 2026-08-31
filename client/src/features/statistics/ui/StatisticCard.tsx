@@ -29,7 +29,8 @@ export function StatisticCard({
         {/* Front */}
         <div className="absolute inset-0 rounded-3xl border border-white bg-gradient-to-br from-white to-slate-100 p-4 text-left shadow-md [backface-visibility:hidden]">
           <ArrowPathIcon className="absolute right-5 top-5 size-4 text-slate-400" />
-          <p className="text-sm text-slate-500">{label}</p>
+
+          <p className="pr-6 text-sm text-slate-500">{label}</p>
 
           <p className="mt-3 text-3xl font-semibold text-slate-900">{value}</p>
         </div>
@@ -37,9 +38,10 @@ export function StatisticCard({
         {/* Back */}
         <div className="absolute inset-0 rounded-3xl border border-white bg-gradient-to-br from-slate-100 to-white p-4 text-left shadow-md [transform:rotateY(180deg)] [backface-visibility:hidden]">
           <ArrowPathIcon className="absolute right-5 top-5 size-4 text-slate-400" />
-          <p className="text-sm font-semibold text-slate-700">{label}</p>
 
-          <p className="mt-3 text-sm leading-6 text-slate-600">{description}</p>
+          <p className="pr-6 text-sm font-semibold text-slate-700">{label}</p>
+
+          <p className="mt-3 text-xs leading-5 text-slate-600">{description}</p>
         </div>
       </div>
     </button>

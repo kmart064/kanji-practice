@@ -44,36 +44,43 @@ export default function StatisticsPage() {
   ];
 
   return (
-    <div className="py-4 lg:py-8">
-      <GlassPanel className="space-y-6 rounded-[2rem] p-8 max-w-3xl">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 text-center">
-            Statistics
-          </p>
-          <h1 className="text-3xl font-semibold text-slate-900">
-            Track Your Progress and Optimize Your Learning
-          </h1>
-          <p className="max-w-2xl text-sm text-slate-600">
-            The following are my key performance metrics that help guide my
-            study plan. Click each card for a description of the metric.
-          </p>
-        </div>
+    <div className="flex flex-col items-center gap-2">
+      <div className="w-full max-w-2xl">
+        <GlassPanel>
+          <div className="space-y-2">
+            <p className="text-center text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">
+              Statistics
+            </p>
 
-        <div className="mx-auto grid w-full gap-4 md:grid-cols-3">
-          {stats.map((stat) => (
-            <StatisticCard
-              key={stat.label}
-              label={stat.label}
-              value={stat.value}
-              description={stat.description}
-            />
-          ))}
-        </div>
-      </GlassPanel>
-      <ReadingProgressChart
-        data={statistics.accuracyHistory}
-        averageAccuracy={statistics.averageAccuracy}
-      />
+            <h1 className="text-center text-3xl font-semibold text-slate-900">
+              Track Your Progress and Optimize Your Learning
+            </h1>
+
+            <p className="text-sm text-slate-600">
+              The following are my key performance metrics that help guide my
+              study plan. Click each card for a description of the metric.
+            </p>
+          </div>
+
+          <div className="mt-2 mx-auto grid w-full gap-4 md:grid-cols-3">
+            {stats.map((stat) => (
+              <StatisticCard
+                key={stat.label}
+                label={stat.label}
+                value={stat.value}
+                description={stat.description}
+              />
+            ))}
+          </div>
+        </GlassPanel>
+      </div>
+
+      <div className="w-full max-w-2xl">
+        <ReadingProgressChart
+          data={statistics.accuracyHistory}
+          averageAccuracy={statistics.averageAccuracy}
+        />
+      </div>
     </div>
   );
 }
