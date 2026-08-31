@@ -23,7 +23,9 @@ export default function StatisticsPage() {
   const stats = [
     {
       label: "Review Streak",
-      value: `${statistics.reviewStreak} days`,
+      value: `${statistics.reviewStreak} ${
+        statistics.reviewStreak === 1 ? "day" : "days"
+      }`,
       description:
         "The number of consecutive days on which you completed a review session.",
     },
@@ -49,10 +51,10 @@ export default function StatisticsPage() {
             Statistics
           </p>
           <h1 className="text-3xl font-semibold text-slate-900">
-            Track your Progress and Optimize your Learning
+            Track Your Progress and Optimize Your Learning
           </h1>
           <p className="max-w-2xl text-sm text-slate-600">
-            The following are key performance metrics that can help guide your
+            The following are my key performance metrics that help guide my
             study plan. Click each card for a description of the metric.
           </p>
         </div>
@@ -68,7 +70,10 @@ export default function StatisticsPage() {
           ))}
         </div>
       </GlassPanel>
-      <ReadingProgressChart data={statistics.accuracyHistory} />
+      <ReadingProgressChart
+        data={statistics.accuracyHistory}
+        averageAccuracy={statistics.averageAccuracy}
+      />
     </div>
   );
 }

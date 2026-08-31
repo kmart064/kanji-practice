@@ -7,36 +7,54 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceArea,
 } from "recharts";
-
-interface ReadingProgressPoint {
-  date: string;
-  accuracy: number;
-}
+import { AccuracyHistory } from "../api/statisticsApi";
 
 interface ReadingProgressChartProps {
-  data: ReadingProgressPoint[];
+  data: AccuracyHistory[];
+  averageAccuracy: number;
 }
 
 export default function ReadingProgressChart({
   data,
+  averageAccuracy,
 }: ReadingProgressChartProps) {
   return (
     <div className="panel-surface p-6">
-      <h2 className="mb-2 text-xl font-semibold">
-        Sample accuracy across sessions
-      </h2>
-
       <p className="mb-6 text-sm text-slate-600">
-        Illustrative data showing the accuracy tracking across study sessions.
-        Ideally, you want to strike a good balance between challenging yourself,
-        but also not going too fast. The red dotted line represents this ideal
-        balance. Being significantly above the line means you should challenge
-        yourself more by increasing the rate of new words to your daily/weekly
-        schedule, while being significantly below means you should reduce the
-        rate. Your personal ideal rate will become apparent at a certain point,
-        and can be utilized to maximize your learning efficiency.
+        <h2 className="mb-2 text-xl font-semibold">
+          My accuracy across sessions
+        </h2>
+
+        <p className="mb-6 text-sm text-slate-600">
+          My study data demonstrating how statistics can be used to guide my
+          personal learning pace. The target range represents the accuracy I aim
+          for to balance strong retention with an efficient rate of learning new
+          words. If my average accuracy falls below the target range, I'm likely
+          introducing new words too quickly and should reduce my word rate to
+          improve retention. Conversely, if my average accuracy exceeds the
+          target range, I may be able to increase my word rate and challenge
+          myself more while maintaining strong retention.
+        </p>
       </p>
+
+      <div className="mt-4 flex flex-wrap justify-center gap-6 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="h-0.5 w-6 bg-blue-500" />
+          <span>Accuracy</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-6 border border-red-500 bg-red-200/50" />
+          <span>Target range</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="h-0.5 w-6 border-t-2 border-dashed border-green-500" />
+          <span>Average accuracy</span>
+        </div>
+      </div>
 
       <ResponsiveContainer max-w-4xl height={300}>
         <LineChart data={data}>
@@ -48,6 +66,12 @@ export default function ReadingProgressChart({
 
           <Tooltip formatter={(value) => `${value}%`} />
 
+          <ReferenceArea y1={80} y2={90} fill="#fecaca" fillOpacity={0.35} />
+
+          <ReferenceLine y={80} stroke="#ef4444" strokeDasharray="4 4" />
+
+          <ReferenceLine y={90} stroke="#ef4444" strokeDasharray="4 4" />
+
           <Line
             type="monotone"
             dataKey="accuracy"
@@ -57,11 +81,13 @@ export default function ReadingProgressChart({
           />
 
           <ReferenceLine
-            y={90}
-            stroke="#ef4444"
+            y={averageAccuracy}
+            stroke="#10b981"
             strokeWidth={2}
-            strokeDasharray="4 4"
-            label={{ value: "Goal", position: "right" }}
+            label={{
+              value: `Average: ${averageAccuracy}%`,
+              position: "right",
+            }}
           />
         </LineChart>
       </ResponsiveContainer>
