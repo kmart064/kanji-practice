@@ -116,16 +116,16 @@ const ReadingDemoPage: React.FC = () => {
           "Outstanding! If this was too easy, consider adding more vocabulary to your daily reviews to further challenge yourself.",
         bg: "bg-green-100",
       };
+    } else if (percent >= 80) {
+      return {
+        message:
+          "Excellent performance! This score is a good indication that you are challenging yourself while also not rushing the process. Keep it up!",
+        bg: "bg-blue-100",
+      };
     } else if (percent >= 70) {
       return {
         message:
-          "Solid performance! This score is a good indication that you are challenging yourself while also not rushing the process. Keep it up!",
-        bg: "bg-blue-100",
-      };
-    } else if (percent >= 50) {
-      return {
-        message:
-          "Good effort. You’re on the right track, but some more repetition will help solidify your understanding.",
+          "Good effort. You're on the right track, but some more repetition and a slightly slower pace should help solidify your understanding.",
         bg: "bg-yellow-100",
       };
     } else {
@@ -265,25 +265,25 @@ const ReadingDemoPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowInstructions((prev) => !prev)}
-            aria-label={
-              showInstructions ? "Hide instructions" : "Show instructions"
-            }
-            className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-          >
-            <ChevronUpIcon
-              className={[
-                "h-4 w-4 transition-transform",
-                showInstructions ? "rotate-0" : "rotate-180",
-              ].join(" ")}
-            />
-            <span>Instructions</span>
-          </button>
+              aria-label={
+                showInstructions ? "Hide instructions" : "Show instructions"
+              }
+              className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
+            >
+              <ChevronUpIcon
+                className={[
+                  "h-4 w-4 transition-transform",
+                  showInstructions ? "rotate-0" : "rotate-180",
+                ].join(" ")}
+              />
+              <span>Instructions</span>
+            </button>
 
             {showInstructions ? (
               <p className="mt-2 max-w-md text-sm text-slate-700">
-                First, try to read the sentence. If you understood it, click
-                the green checkmark. If not, reveal the word. If you still
-                cannot understand, reveal the translation and click the red X.
+                First, try to read the sentence. If you understood it, click the
+                green checkmark. If not, reveal the word. If you still cannot
+                understand, reveal the translation and click the red X.
               </p>
             ) : null}
           </div>
