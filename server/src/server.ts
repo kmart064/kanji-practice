@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
 import cors, { CorsOptions, CorsOptionsDelegate } from "cors";
+import statsRoutes from "./routes/statsRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +24,7 @@ const allowedOrigins = [
 const corsOptions = {
   origin: (
     origin: string | undefined,
-    callback: (err: Error | null, allow?: boolean) => void
+    callback: (err: Error | null, allow?: boolean) => void,
   ) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -45,6 +46,7 @@ app.options("*", cors(corsOptions));
 app.use("/api/auth", authRoutes);
 app.use("/api", deckManagerRouter);
 app.use("/review", reviewRouter);
+app.use("/api/stats", statsRoutes);
 
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, "build"))); // or "dist" if that’s your folder

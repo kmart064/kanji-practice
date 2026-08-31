@@ -1,5 +1,6 @@
 import { body, query, validationResult } from "express-validator";
 import { RequestHandler } from "express";
+import { validateTimeZone } from "./validateTimeZone";
 
 const isStringArray = (value: unknown): boolean => {
   return Array.isArray(value) && value.every((k) => typeof k === "string");
@@ -22,6 +23,7 @@ export const validateKanji = [
     .withMessage("Kanji must be an array")
     .custom(isStringArray)
     .withMessage("Each Kanji must be a string"),
+  validateTimeZone,
 ];
 
 type KanjiQuery = { kanji: string };

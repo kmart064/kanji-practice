@@ -5,14 +5,17 @@ export async function startStudying(): Promise<{
   message: string;
   wordList: string;
 }> {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   return await apiFetch("/review/start", {
     method: "POST",
+    body: JSON.stringify({ timeZone }),
   });
 }
 
 export async function updateStudySession(
   sessionId: number,
-  incorrectKanji: string[]
+  incorrectKanji: string[],
 ): Promise<{
   status: string;
   message: string;
@@ -20,8 +23,13 @@ export async function updateStudySession(
   note: string;
   response: string;
 }> {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   return await apiFetch(`/review/${sessionId}/review-update`, {
     method: "POST",
-    body: JSON.stringify({ incorrectKanji }),
+    body: JSON.stringify({
+      incorrectKanji,
+      timeZone,
+    }),
   });
 }

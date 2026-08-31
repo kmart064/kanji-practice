@@ -8,7 +8,7 @@ import { getAdjustedDueKanji } from "../services/getDueKanji.js";
 export const addKanji = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const errors = validationResult(req);
@@ -17,8 +17,12 @@ export const addKanji = async (
       return;
     }
 
-    const { kanji } = req.body as { kanji: string[] };
-    const result = await addKanjiToDB(kanji);
+    const { kanji, timeZone } = req.body as {
+      kanji: string[];
+      timeZone: string;
+    };
+
+    const result = await addKanjiToDB(kanji, timeZone);
     res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -28,7 +32,7 @@ export const addKanji = async (
 export const getKanjiList = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const kanjiList = await getAdjustedDueKanji();
@@ -41,7 +45,7 @@ export const getKanjiList = async (
 export const findSimilarKanji = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const errors = validationResult(req);
@@ -65,7 +69,7 @@ export const findSimilarKanji = async (
 export const deleteKanji = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const errors = validationResult(req);

@@ -59,9 +59,9 @@ export const updateSessionFromReview = async (
 ) => {
   try {
     const sessionId = Number(req.params.id);
-    const { incorrectKanji } = req.body;
+    const { incorrectKanji, timeZone } = req.body;
 
-    const update = await updateReview(sessionId, incorrectKanji);
+    const update = await updateReview(sessionId, incorrectKanji, timeZone);
 
     let response = "";
     let status = "";

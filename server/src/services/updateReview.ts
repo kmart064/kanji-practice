@@ -21,6 +21,7 @@ import { completeReviewSession } from "./reviewSessionHistory.js";
 export async function updateReview(
   sessionId: number,
   incorrectKanji: string[],
+  timeZone: string,
 ): Promise<{ nextReviewCards: ReviewEntry[]; unaddedKanji: string[] }> {
   // get the remaining cards for the session
   let session = (await getSession(sessionId)) ?? [];
@@ -48,7 +49,7 @@ export async function updateReview(
     }
 
     // for all incorrect kanji, update the review date in the database
-    await updateIncorrectKanji(incorrectKanji);
+    await updateIncorrectKanji(incorrectKanji, timeZone);
 
     // get the incorrect kanji ids
     const incorrectWords = await getKanjiIds(incorrectKanji);
@@ -75,7 +76,7 @@ export async function updateReview(
     });
 
     // update the correct cards review date in the database
-    await updateCorrectKanji(correctWords);
+    await updateCorrectKanji(correctWords, timeZone);
 
     const results = currentBatch.map((card) => ({
       wordId: card.wordId,
