@@ -28,14 +28,15 @@ export default function ReadingProgressChart({
         </h2>
 
         <p className="mb-6 text-sm text-slate-600">
-          My study data demonstrating how statistics can be used to guide my
-          personal learning pace. The target range represents the accuracy I aim
-          for to balance strong retention with an efficient rate of learning new
-          words. If my average accuracy falls below the target range, I'm likely
-          introducing new words too quickly and should reduce my word rate to
-          improve retention. Conversely, if my average accuracy exceeds the
-          target range, I may be able to increase my word rate and challenge
-          myself more while maintaining strong retention.
+          This sample data demonstrates how statistics can be used to guide a
+          personal learning pace. The target range represents the accuracy a
+          learner might aim for to balance strong retention with an efficient
+          rate of learning new words. If average accuracy falls below the target
+          range, the learner may be introducing new words too quickly and should
+          reduce their word rate to improve retention. Conversely, if average
+          accuracy exceeds the target range, they may be able to increase their
+          word rate and challenge themselves more while maintaining strong
+          retention.
         </p>
       </p>
 

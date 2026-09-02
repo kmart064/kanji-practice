@@ -44,7 +44,7 @@ export function AppRouter() {
           <Route path="demo" element={<Dashboard isDemo />} />
           <Route path="demo/rdemo" element={<ReadingDemoPage />} />
           <Route path="demo/grammar-demo" element={<GrammarDemoPage />} />
-          <Route path="demo/statistics" element={<StatisticsPage />} />
+          <Route path="demo/statistics" element={<StatisticsPage isDemo />} />
 
           {isLoggedIn ? (
             <>

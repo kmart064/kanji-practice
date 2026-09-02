@@ -1,20 +1,33 @@
 import { useEffect, useState } from "react";
 import { getStatistics, Statistics } from "../api/statisticsApi";
+import { demoStatistics } from "../model/demoStatistics";
 import { GlassPanel } from "@/shared/ui";
 import { StatisticCard } from "./StatisticCard";
 import ReadingProgressChart from "./ReadingProgressChart";
 
-export default function StatisticsPage() {
-  const [statistics, setStatistics] = useState<Statistics | null>(null);
+interface StatisticsPageProps {
+  isDemo?: boolean;
+}
+
+export default function StatisticsPage({
+  isDemo = false,
+}: StatisticsPageProps) {
+  const [statistics, setStatistics] = useState<Statistics | null>(
+    isDemo ? demoStatistics : null,
+  );
 
   useEffect(() => {
+    if (isDemo) {
+      return;
+    }
+
     async function loadStatistics() {
       const data = await getStatistics();
       setStatistics(data);
     }
 
     loadStatistics();
-  }, []);
+  }, [isDemo]);
 
   if (!statistics) {
     return <div>Loading...</div>;
@@ -58,10 +71,10 @@ export default function StatisticsPage() {
 
             <p className="text-sm leading-6 text-slate-600">
               This page demonstrates how study statistics can be used as a
-              feedback loop to tailor your study pace. The following metrics are
-              based on my own study data and illustrate how performance can
-              inform decisions about when to introduce new kanji and how quickly
-              to progress. Click each card to learn more about the metric.
+              feedback loop to tailor your study pace. The following metrics use
+              sample data to illustrate how performance can inform decisions
+              about when to introduce new kanji and how quickly to progress.
+              Click each card to learn more about the metric.
             </p>
           </div>
 
