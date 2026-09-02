@@ -4,7 +4,7 @@ import logger from "../utils/logger.js";
 const allowedOrigins = [
   "http://localhost:3000",
   "https://kanji-practice-omega.vercel.app",
-  "https://kaizenkanji.com/",
+  "https://kaizenkanji.com",
 ];
 
 export function errorHandler(

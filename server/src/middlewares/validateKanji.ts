@@ -1,6 +1,6 @@
 import { body, query, validationResult } from "express-validator";
 import { RequestHandler } from "express";
-import { validateTimeZone } from "./validateTimeZone";
+import { validateTimeZone } from "./validateTimeZone.js";
 
 const isStringArray = (value: unknown): boolean => {
   return Array.isArray(value) && value.every((k) => typeof k === "string");
