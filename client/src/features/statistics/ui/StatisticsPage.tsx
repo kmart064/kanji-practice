@@ -53,12 +53,15 @@ export default function StatisticsPage() {
             </p>
 
             <h1 className="text-center text-3xl font-semibold text-slate-900">
-              Track Your Progress and Optimize Your Learning
+              Track Your Progress and Optimize Your Pace
             </h1>
 
-            <p className="text-sm text-slate-600">
-              The following are my key performance metrics that help guide my
-              study plan. Click each card for a description of the metric.
+            <p className="text-sm leading-6 text-slate-600">
+              This page demonstrates how study statistics can be used as a
+              feedback loop to tailor your study pace. The following metrics are
+              based on my own study data and illustrate how performance can
+              inform decisions about when to introduce new kanji and how quickly
+              to progress. Click each card to learn more about the metric.
             </p>
           </div>
 

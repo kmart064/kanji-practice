@@ -22,9 +22,9 @@ export default function ReadingProgressChart({
 }: ReadingProgressChartProps) {
   return (
     <div className="panel-surface p-6">
-      <p className="mb-6 text-sm text-slate-600">
-        <h2 className="mb-2 text-xl font-semibold">
-          My accuracy across sessions
+      <p className="mb-6 text-sm text-slate-800">
+        <h2 className="mb-2 text-center text-xl font-semibold">
+          Accuracy tracking across sessions
         </h2>
 
         <p className="mb-6 text-sm text-slate-600">
