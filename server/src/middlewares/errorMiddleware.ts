@@ -4,13 +4,14 @@ import logger from "../utils/logger.js";
 const allowedOrigins = [
   "http://localhost:3000",
   "https://kanji-practice-omega.vercel.app",
+  "https://kaizenkanji.com/",
 ];
 
 export function errorHandler(
   err: unknown,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   logger.error(err instanceof Error ? err.message : "Unknown error occurred");
   const errorMessage =
