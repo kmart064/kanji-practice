@@ -60,7 +60,13 @@ export default function ReadingProgressChart({
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis dataKey="date" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={(date) => {
+              const d = new Date(date);
+              return `${d.getMonth() + 1}/${d.getDate()}`;
+            }}
+          />
 
           <YAxis domain={[60, 100]} tickFormatter={(value) => `${value}%`} />
 
