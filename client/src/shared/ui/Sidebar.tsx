@@ -5,7 +5,6 @@ import {
   ChartBarIcon,
   ChevronLeftIcon,
   HomeIcon,
-  LanguageIcon,
 } from "@heroicons/react/24/outline";
 
 const navItems = [
