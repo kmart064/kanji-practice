@@ -186,7 +186,7 @@ const ReadingDemoPage: React.FC = () => {
                 </div>
 
                 <button
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/demo")}
                   className="mt-4 px-4 py-2 bg-gray-500 text-white hover:bg-gray-300 hover:text-black rounded-lg"
                 >
                   Home
@@ -204,7 +204,7 @@ const ReadingDemoPage: React.FC = () => {
     <div className="page">
       <div className="panel-surface mx-auto max-w-[46rem] p-8 space-y-6">
         <div className="text-center mt-6 mb-6">
-          <h1 className="text-4xl font-extrabold tracking-tight">
+          <h1 className="text-4xl font-bold tracking-tight">
             Kanji Recognition
           </h1>
           <p className="text-gray-500 mt-1">Reading Comprehension Demo</p>

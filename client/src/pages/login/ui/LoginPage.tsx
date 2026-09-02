@@ -16,7 +16,7 @@ export default function LoginPage({ onLogin }: LoginProps) {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      navigate("/");
+      navigate("/dashboard");
     }
   }, [navigate]);
 
@@ -26,7 +26,7 @@ export default function LoginPage({ onLogin }: LoginProps) {
     try {
       await login(username, password);
       onLogin();
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError((err as Error).message || "Login failed");
     }

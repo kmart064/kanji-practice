@@ -6,13 +6,14 @@ import { GrammarDemoPage } from "@/features/grammar-demo";
 import { ReadingDemoPage } from "@/features/reading-demo";
 import { StatisticsPage } from "@/features/statistics";
 import { StudyKanjiPage } from "@/features/study-kanji";
-import { HomePage } from "@/pages/home";
+import { Dashboard } from "@/pages/dashboard";
+import { LandingPage } from "@/pages/landing";
 import { LoginPage } from "@/pages/login";
 import { Layout } from "@/shared/ui";
 
 export function AppRouter() {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    () => !!localStorage.getItem("accessToken")
+    () => !!localStorage.getItem("accessToken"),
   );
 
   useEffect(() => {
@@ -28,25 +29,38 @@ export function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          {!isLoggedIn ? (
+          <Route index element={<LandingPage />} />
+          <Route
+            path="login"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <LoginPage onLogin={() => setIsLoggedIn(true)} />
+              )
+            }
+          />
+
+          <Route path="demo" element={<Dashboard isDemo />} />
+          <Route path="demo/rdemo" element={<ReadingDemoPage />} />
+          <Route path="demo/grammar-demo" element={<GrammarDemoPage />} />
+          <Route path="demo/statistics" element={<StatisticsPage />} />
+
+          {isLoggedIn ? (
             <>
-              <Route
-                path="login"
-                element={<LoginPage onLogin={() => setIsLoggedIn(true)} />}
-              />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </>
-          ) : (
-            <>
-              <Route index element={<HomePage />} />
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="manage" element={<ManageDeckPage />} />
               <Route path="study" element={<StudyKanjiPage />} />
               <Route path="rdemo" element={<ReadingDemoPage />} />
               <Route path="grammar-demo" element={<GrammarDemoPage />} />
               <Route path="statistics" element={<StatisticsPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
             </>
-          )}
+          ) : null}
+
+          <Route
+            path="*"
+            element={<Navigate to={isLoggedIn ? "/dashboard" : "/"} replace />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

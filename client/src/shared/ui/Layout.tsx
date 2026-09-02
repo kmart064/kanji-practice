@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 
 export default function Layout() {
   const { pathname } = useLocation();
-  const showSidebar = pathname !== "/login";
+  const showSidebar = pathname !== "/" && pathname !== "/login";
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (

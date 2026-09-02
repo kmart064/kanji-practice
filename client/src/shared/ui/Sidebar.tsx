@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Bars3Icon,
   BookOpenIcon,
@@ -11,7 +11,7 @@ import {
 const navItems = [
   { label: "Dashboard", to: "/", icon: HomeIcon, end: true },
   { label: "Reading Demo", to: "/rdemo", icon: BookOpenIcon },
-  { label: "Grammar Demo", to: "/grammar-demo", icon: LanguageIcon },
+  //{ label: "Grammar Demo", to: "/grammar-demo", icon: LanguageIcon },
   { label: "Statistics", to: "/statistics", icon: ChartBarIcon },
 ];
 
@@ -21,6 +21,10 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+  const { pathname } = useLocation();
+  const isTrial = pathname.startsWith("/demo");
+  const trialPrefix = isTrial ? "/demo" : "";
+
   return (
     <>
       <aside
@@ -35,7 +39,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
           <div className="flex items-start justify-between gap-3 px-2 pb-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
-                Kanji Practice
+                Kaizen Kanji
               </p>
               <h2 className="mt-2 text-xl font-semibold text-slate-800">
                 Navigation
@@ -56,7 +60,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             {navItems.map(({ label, to, icon: Icon, end }) => (
               <NavLink
                 key={label}
-                to={to}
+                to={`${trialPrefix}${to === "/" ? "" : to}` || "/"}
                 end={end}
                 className={({ isActive }) =>
                   [

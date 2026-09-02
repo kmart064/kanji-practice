@@ -13,7 +13,10 @@ import { authenticateToken } from "../middlewares/authenticate.js";
 
 const router = express.Router();
 
-if (process.env.NODE_ENV === "production") {
+if (
+  process.env.AUTH_ENABLED === "true" ||
+  process.env.NODE_ENV === "production"
+) {
   router.use(authenticateToken);
 }
 
