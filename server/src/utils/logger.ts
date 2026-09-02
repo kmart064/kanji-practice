@@ -6,8 +6,14 @@ let logger: winston.Logger;
 
 if (isProd) {
   logger = winston.createLogger({
-    transports: [],
-    silent: true, // nothing is logged
+    level: "info",
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.printf(({ timestamp, level, message }) => {
+        return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+      }),
+    ),
+    transports: [new winston.transports.Console()],
   });
 } else {
   logger = winston.createLogger({
@@ -16,7 +22,7 @@ if (isProd) {
       winston.format.timestamp(),
       winston.format.printf(({ timestamp, level, message }) => {
         return `${timestamp} [${level.toUpperCase()}]: ${message}`;
-      })
+      }),
     ),
     transports: [
       new winston.transports.Console(),

@@ -13,7 +13,7 @@ export function errorHandler(
   res: Response,
   next: NextFunction,
 ) {
-  logger.error(err instanceof Error ? err.message : "Unknown error occurred");
+  logger.error(err);
   const errorMessage =
     err instanceof Error ? err.message : "Internal server error";
 
