@@ -1,4 +1,4 @@
-import pool from "../utils/db";
+import pool from "../utils/db.js";
 
 export async function getReviewStreak(): Promise<number> {
   const result = await pool.query(`

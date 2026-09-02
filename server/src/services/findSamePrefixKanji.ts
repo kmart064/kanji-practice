@@ -1,5 +1,5 @@
 import pool from "../utils/db.js";
-import { Word } from "../models/Word";
+import { Word } from "../models/Word.js";
 
 /**
  * Returns all kanji that contain the same prefix as provided
@@ -7,7 +7,7 @@ import { Word } from "../models/Word";
  * @returns the kanji that contain the same prefix as provided
  */
 export async function findSamePrefixKanji(
-  kanjiPrefix: string
+  kanjiPrefix: string,
 ): Promise<Word[]> {
   const selectSql = `SELECT kanji FROM words WHERE kanji LIKE $1`;
   const result = await pool.query(selectSql, [`${kanjiPrefix}%`]);

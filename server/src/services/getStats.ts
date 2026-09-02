@@ -1,7 +1,7 @@
-import { getAccuracyHistory } from "./getAccuracyHistory";
-import { getAverageAccuracy } from "./getAverageAccuracy";
-import { getNewWordCount } from "./getNewWordCount";
-import { getReviewStreak } from "./getReviewStreak";
+import { getAccuracyHistory } from "./getAccuracyHistory.js";
+import { getAverageAccuracy } from "./getAverageAccuracy.js";
+import { getNewWordCount } from "./getNewWordCount.js";
+import { getReviewStreak } from "./getReviewStreak.js";
 
 export async function getStats(timeZone: string) {
   const [newWordCount, reviewStreak, averageAccuracy, accuracyHistory] =

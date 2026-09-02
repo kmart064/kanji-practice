@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { getStats } from "../services/getStats";
+import { getStats } from "../services/getStats.js";
 
 export const getStatsHandler = async (
   req: Request,

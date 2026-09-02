@@ -1,4 +1,4 @@
-import { Word } from "../models/Word";
+import { Word } from "../models/Word.js";
 import pool from "../utils/db.js";
 
 export async function getKanjiIds(kanji: string[]): Promise<Word[]> {

@@ -1,5 +1,5 @@
 import pool from "../utils/db.js";
-import { Word } from "../models/Word";
+import { Word } from "../models/Word.js";
 
 /**
  * Checks whether the provided kanji already exist in the database, and returns the ones

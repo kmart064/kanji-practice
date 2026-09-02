@@ -1,4 +1,4 @@
-import pool from "../utils/db";
+import pool from "../utils/db.js";
 
 export async function getNewWordCount(): Promise<number> {
   const STATS_PERIOD_DAYS = Number(process.env.STATS_PERIOD_DAYS ?? 6);
