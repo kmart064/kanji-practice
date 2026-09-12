@@ -4,7 +4,7 @@ const HOST = import.meta.env.VITE_HOST || "localhost";
 export async function apiFetch(
   path: string,
   options: RequestInit = {},
-  retry = true
+  retry = true,
 ) {
   let url = `http://${HOST}:3001${path}`;
   if (!LOCAL) url = `https://${HOST}${path}`;
@@ -48,7 +48,7 @@ async function refreshAccessToken(): Promise<boolean> {
     const response = await apiFetch(
       "/api/auth/refresh",
       { method: "POST", credentials: "include" },
-      false
+      false,
     );
 
     if (!response || !response.accessToken) {
@@ -67,7 +67,7 @@ async function refreshAccessToken(): Promise<boolean> {
 function handleAuthFailure() {
   localStorage.removeItem("accessToken");
   fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(
-    () => {}
+    () => {},
   );
-  window.location.href = "/api/auth/login";
+  window.location.href = "/login";
 }
