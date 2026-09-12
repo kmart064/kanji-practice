@@ -28,15 +28,16 @@ export default function LoginPage({ onLogin }: LoginProps) {
       onLogin();
       navigate("/dashboard");
     } catch (err) {
-      setError((err as Error).message || "Login failed");
+      console.error("Login failed:", err);
+      setError("Invalid username or password.");
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded shadow-md w-80"
+        className="bg-slate-200 p-8 rounded shadow-md w-80"
       >
         <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
 
