@@ -33,7 +33,7 @@ const WordCard: React.FC<Props> = ({
           )}
         </div>
 
-        <p className="text-lg leading-relaxed max-w-sm mx-auto break-words">
+        <p className="text-lg leading-relaxed max-w-sm mx-auto break-words min-h-[3.5rem]">
           {item.sentence}
         </p>
 
