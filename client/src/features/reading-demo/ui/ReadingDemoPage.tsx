@@ -145,9 +145,6 @@ const ReadingDemoPage: React.FC = () => {
           <div className="bg-slate-50 backdrop-blur-sm rounded-xl p-6 shadow">
             <div className="text-center mb-6">
               <h1 className="text-3xl font-bold tracking-tight">Results</h1>
-              <p className="text-gray-600 text-sm mt-1">
-                Review your performance from this session
-              </p>
             </div>
 
             <div className="flex gap-6">
