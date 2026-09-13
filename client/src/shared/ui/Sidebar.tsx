@@ -5,12 +5,13 @@ import {
   ChartBarIcon,
   ChevronLeftIcon,
   HomeIcon,
+  LanguageIcon,
 } from "@heroicons/react/24/outline";
 
 const navItems = [
   { label: "Dashboard", to: "/", icon: HomeIcon, end: true },
   { label: "Reading Demo", to: "/rdemo", icon: BookOpenIcon },
-  //{ label: "Grammar Demo", to: "/grammar-demo", icon: LanguageIcon },
+  { label: "Grammar Demo", to: "/grammar-demo", icon: LanguageIcon },
   { label: "Statistics", to: "/statistics", icon: ChartBarIcon },
 ];
 

@@ -79,3 +79,9 @@ code {
   --btn-color-strong: 153 27 27; /* red-800 */
   --btn-color-light: 255 255 255;
 }
+
+.btn-orange {
+  --btn-color: 249 115 22; /* orange-500 */
+  --btn-color-strong: 154 52 18; /* orange-800 */
+  --btn-color-light: 255 255 255;
+}

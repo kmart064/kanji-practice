@@ -93,6 +93,17 @@ export default function Dashboard({ isDemo: isDemo = false }: DashboardProps) {
           </div>
           <div className="flex flex-col items-center">
             <Link
+              to={`${demoPrefix}/grammar-demo`}
+              className="btn-tinted btn-orange w-full max-w-xs"
+            >
+              Grammar Demo
+            </Link>
+            <p className="mt-2 text-center text-xs text-slate-500">
+              Choose the appropriate grammar to complete each sentence
+            </p>
+          </div>
+          <div className="col-span-2 flex flex-col items-center">
+            <Link
               to={`${demoPrefix}/statistics`}
               className="btn-tinted btn-red w-full max-w-xs"
             >
