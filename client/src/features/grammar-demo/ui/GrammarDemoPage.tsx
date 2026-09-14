@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
-import { demoGrammar } from "@/features/grammar-demo/lib/demoGrammar";
+import { demoGrammar } from "@/features/grammar-demo/model/demoGrammar";
 import GrammarCard from "@/features/grammar-demo/ui/GrammarCard";
 
 type GrammarResult = {

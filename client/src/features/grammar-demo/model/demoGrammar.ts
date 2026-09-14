@@ -1,4 +1,4 @@
-import { GrammarCardItem } from "../model/types";
+import { GrammarCardItem } from "./types";
 
 export const demoGrammar: GrammarCardItem[] = [
   {

@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
-import { demoWords } from "@/features/reading-demo/lib/demoWords";
+import { demoWords } from "@/features/reading-demo/model/demoWords";
 import WordCard from "@/features/reading-demo/ui/WordCard";
 import "./ReadingDemoPage.css";
 
