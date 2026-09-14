@@ -47,7 +47,7 @@ export default function Dashboard({ isDemo: isDemo = false }: DashboardProps) {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col items-center">
             {isDemo ? (
               <LockedAction>Manage Deck</LockedAction>
