@@ -4,6 +4,8 @@ import { demoStatistics } from "../model/demoStatistics";
 import { GlassPanel } from "@/shared/ui";
 import { StatisticCard } from "./StatisticCard";
 import ReadingProgressChart from "./ReadingProgressChart";
+import KanjiWatchlist from "./KanjiWatchList";
+import { demoKanjiWatchlist } from "../model/demoKanjiWatchList";
 
 interface StatisticsPageProps {
   isDemo?: boolean;
@@ -96,6 +98,10 @@ export default function StatisticsPage({
           data={statistics.accuracyHistory}
           averageAccuracy={statistics.averageAccuracy}
         />
+      </div>
+
+      <div className="w-full max-w-2xl">
+        <KanjiWatchlist data={demoKanjiWatchlist} />
       </div>
     </div>
   );
