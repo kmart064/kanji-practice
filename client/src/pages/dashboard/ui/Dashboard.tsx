@@ -42,7 +42,7 @@ export default function Dashboard({ isDemo: isDemo = false }: DashboardProps) {
           </h1>
           <p className="mx-auto max-w-xl text-sm leading-7 text-slate-600">
             {isDemo
-              ? "Explore the reading demo and statistics. Sign in to create your own deck and begin studying."
+              ? "Explore the demos and statistics. Sign in to create your own deck and begin studying."
               : "Manage your deck, start a study session, or analyze your progress from one place."}
           </p>
         </div>
