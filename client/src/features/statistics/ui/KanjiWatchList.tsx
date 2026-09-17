@@ -37,15 +37,15 @@ export default function KanjiWatchlist({ data }: KanjiWatchlistProps) {
         </p>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-lg border border-slate-200">
-        <table className="w-full text-left">
+      <div className="mt-6 overflow-x-auto rounded-lg border border-slate-200">
+        <table className="text-left">
           <thead className="bg-slate-50">
             <tr className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               <th className="px-4 py-3">Kanji</th>
               <th className="px-4 py-3">Word</th>
               <th className="px-4 py-3">Retention</th>
-              <th className="hidden px-4 py-3 sm:table-cell">Last Reviewed</th>
-              <th className="hidden px-4 py-3 md:table-cell">Reviews</th>
+              <th className="px-4 py-3">Last Reviewed</th>
+              <th className="px-4 py-3">Reviews</th>
             </tr>
           </thead>
 
@@ -70,13 +70,11 @@ export default function KanjiWatchlist({ data }: KanjiWatchlistProps) {
                   <RetentionRate value={item.retentionRate} />
                 </td>
 
-                <td className="hidden px-4 py-3 text-slate-500 sm:table-cell">
+                <td className="px-4 py-3 text-slate-500">
                   {item.lastReviewed}
                 </td>
 
-                <td className="hidden px-4 py-3 text-slate-500 md:table-cell">
-                  {item.reviewCount}
-                </td>
+                <td className="px-4 py-3 text-slate-500">{item.reviewCount}</td>
               </tr>
             ))}
           </tbody>

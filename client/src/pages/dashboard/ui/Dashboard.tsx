@@ -24,7 +24,7 @@ export default function Dashboard({ isDemo: isDemo = false }: DashboardProps) {
   const demoPrefix = isDemo ? "/demo" : "";
 
   return (
-    <div className="py-4 lg:py-8">
+    <div className="lg:py-8">
       <div className="panel-surface mx-auto w-full max-w-3xl rounded-[2rem] p-8 text-center">
         <div className="space-y-3">
           {isDemo ? (
@@ -102,7 +102,7 @@ export default function Dashboard({ isDemo: isDemo = false }: DashboardProps) {
               Choose the appropriate grammar to complete each sentence
             </p>
           </div>
-          <div className="col-span-2 flex flex-col items-center">
+          <div className="flex flex-col items-center sm:col-span-2">
             <Link
               to={`${demoPrefix}/statistics`}
               className="btn-tinted btn-red w-full max-w-xs"

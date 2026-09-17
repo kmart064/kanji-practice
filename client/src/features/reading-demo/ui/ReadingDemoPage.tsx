@@ -141,13 +141,13 @@ const ReadingDemoPage: React.FC = () => {
   if (!item) {
     return (
       <div className="page">
-        <div className="panel-surface p-8 max-w-4xl mx-auto">
+        <div className="panel-surface mx-auto max-w-[46rem] p-8">
           <div className="bg-slate-50 backdrop-blur-sm rounded-xl p-6 shadow">
             <div className="text-center mb-6">
               <h1 className="text-3xl font-bold tracking-tight">Results</h1>
             </div>
 
-            <div className="flex gap-6">
+            <div className="space-y-6">
               <div className="flex-1 space-y-2">
                 {demoWords.map((word) => {
                   const result = resultsMap[word.id];
@@ -170,7 +170,7 @@ const ReadingDemoPage: React.FC = () => {
               </div>
 
               <div
-                className={`w-64 rounded-xl shadow p-4 flex flex-col justify-between ${summary.bg}`}
+                className={`mx-auto max-w-sm rounded-xl p-4 shadow ${summary.bg}`}
               >
                 <div>
                   <div className="text-center text-3xl font-bold mb-2">
@@ -184,7 +184,7 @@ const ReadingDemoPage: React.FC = () => {
 
                 <button
                   onClick={() => navigate("/demo")}
-                  className="mt-4 px-4 py-2 bg-gray-500 text-white hover:bg-gray-300 hover:text-black rounded-lg"
+                  className="mt-4 mx-auto block px-4 py-2 bg-gray-500 text-white hover:bg-gray-300 hover:text-black rounded-lg"
                 >
                   Home
                 </button>

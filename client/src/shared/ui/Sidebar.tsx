@@ -29,7 +29,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
     <>
       <aside
         className={[
-          "w-full lg:fixed lg:left-6 lg:top-6 lg:z-20 lg:w-56 lg:transition-transform lg:duration-300",
+          "w-full mb-4 lg:mb-0 lg:fixed lg:left-6 lg:top-6 lg:z-20 lg:w-56 lg:transition-transform lg:duration-300",
           isCollapsed
             ? "lg:-translate-x-[calc(100%+2rem)]"
             : "lg:translate-x-0",
