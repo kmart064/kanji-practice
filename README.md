@@ -12,13 +12,13 @@ The application uses a Spaced Repetition System (SRS) to schedule reviews based 
 
 The primary review mode uses AI-generated sentences to test the user's understanding of individual kanji.
 
-<img width="753" height="520" alt="image" src="https://github.com/user-attachments/assets/bf32d81f-a619-4785-8529-631b9959cdb0" />
+<img width="755" height="592" alt="image" src="https://github.com/user-attachments/assets/df8f91b3-98f8-4ec2-9e99-5d0b24519bc3" />
 
 ### Grammar Review
 
 A grammar review mode has also been added to study Japanese grammar structures using a similar approach. AI-generated sentences are presented as fill-in-the-blank questions with multiple-choice answers.
 
-<img width="756" height="745" alt="image" src="https://github.com/user-attachments/assets/0a66407b-8950-47b2-ab48-342a20f1312f" />
+<img width="756" height="890" alt="image" src="https://github.com/user-attachments/assets/bacee7bf-6950-409a-bb49-0da73c3ed3b9" />
 
 ## Key Features
 
