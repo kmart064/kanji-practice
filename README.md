@@ -81,9 +81,7 @@ cd server
 npm run start:dev
 ```
 
-Start the client separately according to the instructions in the `client` directory.
-
-In a separate terminal:
+5. In a separate terminal, start the client:
 
 ```bash
 cd client
